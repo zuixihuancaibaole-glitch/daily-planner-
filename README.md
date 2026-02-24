@@ -1,7 +1,8 @@
+```markdown
 # Daily Planner · 日计划
 
 A beautiful, fully offline daily task planner web app built with pure HTML, CSS, and JavaScript.  
-No backend, no login, no server — all data is stored locally in your browser.
+No backend, no login, no server — all data is stored locally in your browser. Updated with multilingual support, week view, and more!
 
 **Live Demo**  
 https://zuixihuancaibaole-glitch.github.io/daily-planner-/
@@ -9,15 +10,19 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 ## Features
 
 - 6 elegant themes (warm ink, ocean, forest, midnight, rose, sand)
+- Multilingual support (English / Chinese toggle)
+- Day and Week views for better planning
 - Time-blocked tasks with automatic “Now” highlighting
 - Timeline view showing tasks by hour
 - Drag-and-drop reordering of tasks
 - Priority levels (high / medium / low) with color badges
-- Categories/tags support
+- Categories/tags support (work, study, life, health, social, fun, other)
 - Sticky notes (quick memos)
 - Daily notes field with auto-save
 - Progress statistics & completion bar
 - One-click print friendly layout
+- Notification banner for updates
+- Automatic pruning of old data (after 180 days)
 - Responsive design — works well on mobile and desktop
 - Completely offline after first load
 
@@ -34,6 +39,11 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 ### Option 3: Deploy your own copy
 - Fork this repo  
 - Or simply upload `index.html` to GitHub Pages / Vercel / Netlify / any static host
+
+## Screenshots
+
+<img width="1893" height="873" alt="image" src="https://github.com/user-attachments/assets/e42a2c52-98b2-4976-841c-c1b08a47d57c" />
+
 
 ## Tech Stack
 
@@ -54,7 +64,7 @@ Feel free to fork, modify, and use it for personal or commercial purposes.
 # 日计划 · Daily Planner
 
 一款美观、完全离线的每日任务规划网页应用，仅使用纯 HTML + CSS + JavaScript 开发。  
-无需后端、无需登录、无需服务器，所有数据保存在浏览器本地。
+无需后端、无需登录、无需服务器，所有数据保存在浏览器本地。更新了多语言支持、周视图等功能！
 
 **在线体验**  
 https://zuixihuancaibaole-glitch.github.io/daily-planner-/
@@ -62,15 +72,19 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 ## 主要功能
 
 - 6 种精致主题（暖墨、海蓝、森林、午夜、玫瑰、沙漠）
+- 多语言支持（英文/中文切换）
+- 日视图和周视图，便于规划
 - 时间段任务规划 + 当前任务自动高亮（“进行中”）
 - 按小时显示的时间轴视图
 - 任务支持拖拽排序
 - 三级优先级（高/中/低） + 彩色标签
-- 支持分类/标签
+- 支持分类/标签（工作、学习、生活、健康、社交、娱乐、其他）
 - 便签（Sticky Notes）功能
 - 每日笔记区域（自动保存）
 - 完成进度统计 + 进度条
 - 一键打印友好布局
+- 通知横幅（用于更新提醒）
+- 自动清理旧数据（180 天后）
 - 响应式设计，手机和电脑均良好适配
 - 首次加载后完全支持离线使用
 
@@ -88,6 +102,10 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 - Fork 本仓库  
 - 或直接将 `index.html` 上传至 GitHub Pages / Vercel / Netlify 等静态托管平台
 
+## 截图
+
+<img width="1910" height="873" alt="image" src="https://github.com/user-attachments/assets/6367cf89-d6fd-4ade-9b7e-74af6918710c" />
+
 
 ## 技术栈
 
@@ -104,3 +122,4 @@ MIT License
 欢迎自由 fork、修改，并可用于个人或商业用途。
 
 Star 支持一下项目～感谢！
+```
