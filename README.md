@@ -1,4 +1,3 @@
-```markdown
 # Daily Planner · 日计划
 
 A beautiful, fully offline daily task planner web app built with pure HTML, CSS, and JavaScript.  
@@ -42,8 +41,7 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 
 ## Screenshots
 
-<img width="1893" height="873" alt="image" src="https://github.com/user-attachments/assets/e42a2c52-98b2-4976-841c-c1b08a47d57c" />
-
+(Add your screenshots here later – recommended: main view, week view, timeline, theme switcher, mobile view)
 
 ## Tech Stack
 
@@ -104,8 +102,7 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 
 ## 截图
 
-<img width="1910" height="873" alt="image" src="https://github.com/user-attachments/assets/6367cf89-d6fd-4ade-9b7e-74af6918710c" />
-
+（稍后可在此补充截图，建议包含：主界面、周视图、时间轴、主题切换、手机视图）
 
 ## 技术栈
 
@@ -122,4 +119,3 @@ MIT License
 欢迎自由 fork、修改，并可用于个人或商业用途。
 
 Star 支持一下项目～感谢！
-```
