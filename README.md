@@ -39,10 +39,6 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 - Fork this repo  
 - Or simply upload `index.html` to GitHub Pages / Vercel / Netlify / any static host
 
-## Screenshots
-
-(Add your screenshots here later – recommended: main view, week view, timeline, theme switcher, mobile view)
-
 ## Tech Stack
 
 - HTML5 + CSS3 (CSS variables for theming)  
@@ -99,10 +95,6 @@ https://zuixihuancaibaole-glitch.github.io/daily-planner-/
 ### 方式三：自己部署
 - Fork 本仓库  
 - 或直接将 `index.html` 上传至 GitHub Pages / Vercel / Netlify 等静态托管平台
-
-## 截图
-
-（稍后可在此补充截图，建议包含：主界面、周视图、时间轴、主题切换、手机视图）
 
 ## 技术栈
 
