@@ -4,12 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日计划 · Daily Planner</title>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>日计划 · Daily Planner</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── THEMES ──────────────────────────────────────────────────────── */
@@ -208,6 +202,15 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 .sticky-item:hover .sticky-del{opacity:1;}
 .sticky-del:hover{background:var(--line);color:var(--ink);}
 .sticky-empty{text-align:center;padding:13px 0 5px;color:var(--ink-faint);font-size:.8rem;}
+/* ── Sticky week-goals section in day view ───────────────────────── */
+.sticky-week-section{display:flex;flex-direction:column;}
+.sticky-week-sec-header{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 4px;margin-bottom:2px;}
+.sticky-week-sec-label{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--now-border);}
+.sticky-week-sec-count{font-size:.68rem;color:var(--ink-faint);font-family:'DM Mono',monospace;font-weight:600;}
+.sticky-week-goal{background:var(--now-bg);border-radius:6px;padding:7px 4px 7px 6px;margin-bottom:3px;border-bottom:none!important;border:1px solid var(--now-border)!important;border-opacity:.35;}
+.sticky-week-goal:last-child{border-bottom:none;}
+.sticky-divider{height:1px;background:var(--line);margin:8px 0 6px;}
+.sticky-week-badge{display:inline-flex;align-items:center;gap:2px;font-size:.58rem;padding:1px 6px;border-radius:4px;background:var(--now-border);color:#fff;font-weight:700;margin-right:5px;vertical-align:middle;letter-spacing:.04em;white-space:nowrap;opacity:.85;}
 
 /* ── SORT ROW ────────────────────────────────────────────────────── */
 .sort-row{display:flex;align-items:center;gap:8px;}
@@ -251,6 +254,39 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 .wk-stat{background:var(--paper);border-radius:10px;border:1px solid var(--line);padding:14px 16px;text-align:center;}
 .wk-stat-num{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);}
 .wk-stat-lbl{font-size:.68rem;color:var(--ink-light);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-top:3px;}
+
+/* ── WEEK GOALS ──────────────────────────────────────────────────── */
+.wk-goals-card{margin-bottom:20px;border:1.5px solid var(--now-border)!important;box-shadow:0 0 0 3px var(--now-glow),0 2px 12px var(--shadow)!important;}
+.wk-goals-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--now-bg),transparent);}
+.wk-goals-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.wk-goals-title-icon{font-size:1.1rem;}
+.wk-goals-meta{font-size:.72rem;color:var(--ink-faint);font-weight:500;}
+.wk-goals-hint{font-size:.7rem;color:var(--now-border);font-weight:600;background:var(--now-bg);padding:3px 9px;border-radius:20px;border:1px solid var(--now-border);letter-spacing:.04em;}
+.wk-goals-body{padding:14px 20px;}
+.wk-goal-input-row{display:flex;gap:8px;margin-bottom:12px;}
+.wk-goal-input-row input[type="text"]{flex:1;padding:8px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--bg);outline:none;width:auto;transition:border-color .2s,background .35s;}
+.wk-goal-input-row input[type="text"]:focus{border-color:var(--now-border);box-shadow:0 0 0 3px var(--now-glow);}
+.wk-goal-add-btn{width:36px;height:36px;border-radius:8px;border:none;background:var(--now-border);color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .18s,transform .15s;}
+.wk-goal-add-btn:hover{opacity:.85;transform:scale(1.06);}
+.wk-goal-list{display:flex;flex-direction:column;gap:0;}
+.wk-goal-item{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--line);animation:slideIn .22s ease;}
+.wk-goal-item:last-child{border-bottom:none;}
+.wk-goal-check{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:2px solid var(--now-border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;background:transparent;}
+.wk-goal-check:hover{background:var(--now-bg);}
+.wk-goal-check.checked{background:var(--completed);border-color:var(--completed);}
+.wk-goal-check.checked::after{content:'✓';color:#fff;font-size:.64rem;font-weight:700;}
+.wk-goal-text{flex:1;font-size:.9rem;color:var(--ink);word-break:break-word;line-height:1.45;font-weight:500;}
+.wk-goal-item.gdone .wk-goal-text{text-decoration:line-through;color:var(--ink-faint);font-weight:400;}
+.wk-goal-del{width:24px;height:24px;border-radius:6px;border:none;background:transparent;cursor:pointer;color:var(--ink-faint);display:flex;align-items:center;justify-content:center;font-size:.78rem;opacity:0;transition:opacity .15s,background .15s;flex-shrink:0;}
+.wk-goal-item:hover .wk-goal-del{opacity:1;}
+.wk-goal-del:hover{background:#fde8e4;color:#c0533a;}
+.wk-goal-empty{text-align:center;padding:16px 0 6px;color:var(--ink-faint);font-size:.82rem;line-height:1.6;}
+.wk-goals-progress{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);}
+.wk-goals-bar{height:4px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:5px;}
+.wk-goals-fill{height:100%;background:linear-gradient(90deg,var(--now-border),var(--completed));border-radius:99px;transition:width .5s ease;}
+.wk-goals-bar-label{display:flex;justify-content:space-between;font-size:.7rem;color:var(--ink-faint);margin-top:4px;}
+/* Badge shown on week-goal stickies in the day view */
+.sticky-week-badge{display:inline-flex;align-items:center;gap:2px;font-size:.58rem;padding:1px 6px;border-radius:4px;background:var(--now-bg);color:var(--now-border);border:1px solid var(--now-border);font-weight:700;margin-right:5px;vertical-align:middle;letter-spacing:.04em;white-space:nowrap;}
 
 /* ── MODAL ───────────────────────────────────────────────────────── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .2s;}
@@ -459,6 +495,32 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
       <button class="week-nav-btn" onclick="shiftWeek(1)">›</button>
       <button class="btn btn-secondary" style="margin-left:8px;font-size:.78rem;padding:5px 12px;" onclick="goToThisWeek()" data-i18n="thisWeek"></button>
     </div>
+
+    <!-- WEEKLY GOALS CARD -->
+    <div class="card wk-goals-card" id="wk-goals-card">
+      <div class="wk-goals-header">
+        <div class="wk-goals-title">
+          <span id="wk-goals-title-text"></span>
+          <span class="wk-goals-meta" id="wk-goals-meta"></span>
+        </div>
+        <span class="wk-goals-hint" id="wk-goals-hint-badge"></span>
+      </div>
+      <div class="wk-goals-body">
+        <div class="wk-goal-input-row">
+          <input type="text" id="wk-goal-input" onkeydown="if(event.key==='Enter') addWeekGoal()">
+          <button class="wk-goal-add-btn" onclick="addWeekGoal()">+</button>
+        </div>
+        <div class="wk-goal-list" id="wk-goal-list"></div>
+        <div class="wk-goals-progress" id="wk-goals-progress" style="display:none;">
+          <div class="wk-goals-bar"><div class="wk-goals-fill" id="wk-goals-fill" style="width:0%"></div></div>
+          <div class="wk-goals-bar-label">
+            <span id="wk-goals-bar-text"></span>
+            <span id="wk-goals-bar-pct"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="week-grid" id="week-grid"></div>
     <div class="week-summary" id="week-summary"></div>
   </div>
@@ -598,6 +660,13 @@ const I18N = {
     weekRange:'{start} — {end}',
     wkEmpty:'空', wkMore:'+{n}项', wkClickHint:'点击查看',
     wkTotal:'本周计划', wkDone:'已完成', wkRate:'完成率', wkHighPri:'高优先',
+    wkGoalTitle:'🎯 本周大任务',
+    wkGoalHint:'自动同步至每日便签',
+    wkGoalPh:'添加本周想完成的大目标…',
+    wkGoalEmpty:'还没有本周大任务\n在上方输入并按 Enter 添加',
+    wkGoalBadge:'周目标',
+    wkGoalProgress:'{done} / {total} 已完成',
+    wkGoalDelTitle:'删除',
     // notifications
     notifPrompt:'开启浏览器通知，即可在任务开始前收到提醒',
     notifAllow:'开启提醒',
@@ -660,6 +729,13 @@ const I18N = {
     weekRange:'{start} – {end}',
     wkEmpty:'Empty', wkMore:'+{n} more', wkClickHint:'Click to view',
     wkTotal:'Week Total', wkDone:'Done', wkRate:'Rate', wkHighPri:'High Pri',
+    wkGoalTitle:'🎯 Weekly Goals',
+    wkGoalHint:'Auto-synced to daily stickies',
+    wkGoalPh:'Add a big goal for this week…',
+    wkGoalEmpty:'No weekly goals yet.\nType above and press Enter to add one.',
+    wkGoalBadge:'Weekly',
+    wkGoalProgress:'{done} / {total} done',
+    wkGoalDelTitle:'Delete',
     notifPrompt:'Enable browser notifications to get reminders before tasks start.',
     notifAllow:'Enable',
     notifTitle:'Task Starting Soon',
@@ -718,7 +794,7 @@ function setLang(l) {
   updateDateDisplay();
   renderStickies();
   renderAll();
-  if (currentView==='week') renderWeek();
+  if (currentView==='week') { renderWeek(); renderWeekGoals(); }
   updateNotifBanner();
 }
 function applyLang() {
@@ -1052,6 +1128,7 @@ function updateDateDisplay() {
   document.getElementById('real-date-input').value = currentDate;
   document.getElementById('daily-notes').value = notes[currentDate]||'';
   renderAll();
+  renderStickies(); // re-render so week-goal section reflects the new date's week
   clearForm();
 }
 function changeDay(dir) { currentDate=dir<0?prevDay(currentDate):nextDay(currentDate); updateDateDisplay(); }
@@ -1126,6 +1203,97 @@ function renderWeek() {
     <div class="wk-stat"><div class="wk-stat-num">${wkDone}</div><div class="wk-stat-lbl">${t('wkDone')}</div></div>
     <div class="wk-stat"><div class="wk-stat-num">${rate}%</div><div class="wk-stat-lbl">${t('wkRate')}</div></div>
     <div class="wk-stat"><div class="wk-stat-num">${wkHigh}</div><div class="wk-stat-lbl">${t('wkHighPri')}</div></div>`;
+
+  renderWeekGoals();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// WEEK GOALS  (stored as stickies with a weekKey property)
+// ═══════════════════════════════════════════════════════════════════
+function getWeekKey(offset) {
+  // Returns the Monday date string for the viewed week — used as the goal group key
+  return getWeekStart(offset);
+}
+
+function addWeekGoal() {
+  const inp = document.getElementById('wk-goal-input');
+  const text = inp.value.trim();
+  if (!text) { inp.focus(); return; }
+  const wk = getWeekKey(weekOffset);
+  // Create sticky with weekKey so it appears in the day-view sticky panel too
+  const s = { id: Date.now() + Math.random(), text, done: false, weekKey: wk };
+  stickies.push(s);
+  inp.value = '';
+  saveStickies();
+  renderWeekGoals();
+  renderStickies();   // refresh day-view sticky panel
+  inp.focus();
+}
+
+function renderWeekGoals() {
+  const wk = getWeekKey(weekOffset);
+  const goals = stickies.filter(s => s.weekKey === wk);
+
+  // ── title / hint ──
+  const titleEl = document.getElementById('wk-goals-title-text');
+  const metaEl  = document.getElementById('wk-goals-meta');
+  const hintEl  = document.getElementById('wk-goals-hint-badge');
+  const inputEl = document.getElementById('wk-goal-input');
+  if (titleEl)  titleEl.textContent = t('wkGoalTitle');
+  if (hintEl)   hintEl.textContent  = t('wkGoalHint');
+  if (inputEl)  inputEl.placeholder = t('wkGoalPh');
+
+  const done = goals.filter(g => g.done).length;
+  if (metaEl) {
+    metaEl.textContent = goals.length ? `${done} / ${goals.length}` : '';
+  }
+
+  // ── progress bar ──
+  const progEl  = document.getElementById('wk-goals-progress');
+  const fillEl  = document.getElementById('wk-goals-fill');
+  const barText = document.getElementById('wk-goals-bar-text');
+  const barPct  = document.getElementById('wk-goals-bar-pct');
+  if (goals.length > 0 && progEl) {
+    progEl.style.display = '';
+    const pct = Math.round(done / goals.length * 100);
+    if (fillEl)  fillEl.style.width = pct + '%';
+    if (barText) barText.textContent = t('wkGoalProgress', {done, total: goals.length});
+    if (barPct)  barPct.textContent  = pct + '%';
+  } else if (progEl) {
+    progEl.style.display = 'none';
+  }
+
+  // ── list ──
+  const container = document.getElementById('wk-goal-list');
+  if (!container) return;
+
+  if (goals.length === 0) {
+    container.innerHTML = `<div class="wk-goal-empty">${t('wkGoalEmpty').replace('\n','<br>')}</div>`;
+    return;
+  }
+
+  container.innerHTML = '';
+  goals.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'wk-goal-item' + (s.done ? ' gdone' : '');
+    div.innerHTML = `
+      <div class="wk-goal-check${s.done ? ' checked' : ''}" onclick="toggleWeekGoal(${s.id})"></div>
+      <div class="wk-goal-text">${escHtml(s.text)}</div>
+      <button class="wk-goal-del" onclick="deleteWeekGoal(${s.id})" title="${t('wkGoalDelTitle')}">✕</button>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleWeekGoal(id) {
+  const s = stickies.find(x => x.id == id);
+  if (s) { s.done = !s.done; saveStickies(); renderWeekGoals(); renderStickies(); }
+}
+
+function deleteWeekGoal(id) {
+  stickies = stickies.filter(x => x.id != id);
+  saveStickies();
+  renderWeekGoals();
+  renderStickies();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1291,33 +1459,109 @@ function renderTimeline() {
 // ═══════════════════════════════════════════════════════════════════
 // STICKY NOTES
 // ═══════════════════════════════════════════════════════════════════
+// Returns the Monday ISO string of the week that contains dateStr
+function weekKeyOf(dateStr) {
+  const d = dateFromStr(dateStr);
+  const dow = d.getDay(); // 0=Sun
+  d.setDate(d.getDate() - ((dow + 6) % 7));
+  return d.toISOString().slice(0, 10);
+}
+
 function addSticky() {
   const inp=document.getElementById('sticky-input');
   const text=inp.value.trim();if(!text){inp.focus();return;}
   stickies.push({id:Date.now()+Math.random(),text,done:false});
   inp.value='';saveStickies();renderStickies();inp.focus();
 }
-function toggleSticky(id){const s=stickies.find(x=>x.id==id);if(s){s.done=!s.done;saveStickies();renderStickies();}}
-function deleteSticky(id){stickies=stickies.filter(x=>x.id!=id);saveStickies();renderStickies();}
-function renderStickies() {
-  const container=document.getElementById('sticky-list');
-  const countEl=document.getElementById('sticky-count');
-  if(stickies.length===0){
-    container.innerHTML=`<div class="sticky-empty">${t('stickyEmpty')}</div>`;
-    countEl.textContent='';return;
+function toggleSticky(id){
+  const s=stickies.find(x=>x.id==id);
+  if(s){
+    s.done=!s.done;
+    saveStickies();
+    renderStickies();
+    // If toggled item is a week goal, refresh week panel too
+    if(s.weekKey && currentView==='week') renderWeekGoals();
   }
-  const done=stickies.filter(s=>s.done).length;
-  countEl.textContent=t('stickyDone',{done,total:stickies.length});
-  container.innerHTML='';
-  stickies.forEach(s=>{
-    const div=document.createElement('div');
-    div.className='sticky-item'+(s.done?' sdone':'');
-    div.innerHTML=`
+}
+function deleteSticky(id){
+  stickies=stickies.filter(x=>x.id!=id);
+  saveStickies();
+  renderStickies();
+  if(currentView==='week') renderWeekGoals();
+}
+
+function renderStickies() {
+  const container = document.getElementById('sticky-list');
+  const countEl   = document.getElementById('sticky-count');
+
+  // Split: week-goals for this date's week vs regular stickies
+  const thisWeekKey = weekKeyOf(currentDate);
+  const weekGoals   = stickies.filter(s => s.weekKey === thisWeekKey);
+  const regular     = stickies.filter(s => !s.weekKey);
+
+  const totalAll = stickies.length;
+  const doneAll  = stickies.filter(s => s.done).length;
+  countEl.textContent = totalAll ? t('stickyDone',{done:doneAll,total:totalAll}) : '';
+
+  container.innerHTML = '';
+
+  // ── Week goals section (if any) ──────────────────────────────────
+  if (weekGoals.length > 0) {
+    const sec = document.createElement('div');
+    sec.className = 'sticky-week-section';
+
+    const header = document.createElement('div');
+    header.className = 'sticky-week-sec-header';
+    const doneCnt = weekGoals.filter(g=>g.done).length;
+    header.innerHTML = `<span class="sticky-week-sec-label">🎯 ${t('wkGoalTitle')}</span><span class="sticky-week-sec-count">${doneCnt}/${weekGoals.length}</span>`;
+    sec.appendChild(header);
+
+    weekGoals.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'sticky-item sticky-week-goal' + (s.done ? ' sdone' : '');
+      div.innerHTML = `
+        <div class="sticky-check${s.done?' checked':''}" onclick="toggleSticky(${s.id})"></div>
+        <div class="sticky-text">
+          <span class="sticky-week-badge">${t('wkGoalBadge')}</span>${escHtml(s.text)}
+        </div>
+        <button class="sticky-del" onclick="deleteSticky(${s.id})" title="${t('stickyDelTitle')}">✕</button>`;
+      sec.appendChild(div);
+    });
+
+    container.appendChild(sec);
+
+    // Divider between sections
+    if (regular.length > 0) {
+      const divider = document.createElement('div');
+      divider.className = 'sticky-divider';
+      container.appendChild(divider);
+    }
+  }
+
+  // ── Regular stickies ─────────────────────────────────────────────
+  if (regular.length === 0 && weekGoals.length === 0) {
+    container.innerHTML = `<div class="sticky-empty">${t('stickyEmpty')}</div>`;
+    countEl.textContent = '';
+    return;
+  }
+
+  regular.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'sticky-item' + (s.done ? ' sdone' : '');
+    div.innerHTML = `
       <div class="sticky-check${s.done?' checked':''}" onclick="toggleSticky(${s.id})"></div>
       <div class="sticky-text">${escHtml(s.text)}</div>
       <button class="sticky-del" onclick="deleteSticky(${s.id})" title="${t('stickyDelTitle')}">✕</button>`;
     container.appendChild(div);
   });
+
+  if (regular.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'sticky-empty';
+    empty.style.padding = '8px 0 2px';
+    empty.textContent = t('stickyEmpty');
+    container.appendChild(empty);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1397,4 +1641,3 @@ updateNotifBanner();
 </script>
 </body>
 </html>
-
