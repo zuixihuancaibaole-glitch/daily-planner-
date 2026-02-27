@@ -1,113 +1,202 @@
-# Daily Planner · 日计划
+# 🗒 Daily Planner · 日计划
 
-A beautiful, fully offline daily task planner web app built with pure HTML, CSS, and JavaScript.  
-No backend, no login, no server — all data is stored locally in your browser. Updated with multilingual support, week view, and more!
+<div align="center">
 
-**Live Demo**  
-https://zuixihuancaibaole-glitch.github.io/daily-planner-/
+A beautiful, fully offline daily planner — no server, no login, no dependencies.  
+一款精美的全离线日计划应用，无需服务器、无需登录、无需依赖。
 
-## Features
+![HTML](https://img.shields.io/badge/HTML-Single%20File-orange?style=flat-square&logo=html5)
+![CSS](https://img.shields.io/badge/CSS-Vanilla-blue?style=flat-square&logo=css3)
+![JS](https://img.shields.io/badge/JavaScript-Vanilla-yellow?style=flat-square&logo=javascript)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-- 6 elegant themes (warm ink, ocean, forest, midnight, rose, sand)
-- Multilingual support (English / Chinese toggle)
-- Day and Week views for better planning
-- Time-blocked tasks with automatic “Now” highlighting
-- Timeline view showing tasks by hour
-- Drag-and-drop reordering of tasks
-- Priority levels (high / medium / low) with color badges
-- Categories/tags support (work, study, life, health, social, fun, other)
-- Sticky notes (quick memos)
-- Daily notes field with auto-save
-- Progress statistics & completion bar
-- One-click print friendly layout
-- Notification banner for updates
-- Automatic pruning of old data (after 180 days)
-- Responsive design — works well on mobile and desktop
-- Completely offline after first load
+[English](#english) · [中文](#中文)
 
-## Quick Start
-
-### Option 1: Use online immediately
-Just open:  
-https://zuixihuancaibaole-glitch.github.io/daily-planner-/
-
-### Option 2: Run locally
-1. Download `index.html` from this repository  
-2. Double-click the file — it works offline forever
-
-### Option 3: Deploy your own copy
-- Fork this repo  
-- Or simply upload `index.html` to GitHub Pages / Vercel / Netlify / any static host
-
-## Tech Stack
-
-- HTML5 + CSS3 (CSS variables for theming)  
-- Vanilla JavaScript (no frameworks)  
-- localStorage for persistence  
-- Google Fonts: Playfair Display, DM Sans, DM Mono
-
-## License
-
-MIT License  
-Copyright © 2026 Leo (@LeoLy1005)
-
-Feel free to fork, modify, and use it for personal or commercial purposes.
+</div>
 
 ---
 
-# 日计划 · Daily Planner
+## English
 
-一款美观、完全离线的每日任务规划网页应用，仅使用纯 HTML + CSS + JavaScript 开发。  
-无需后端、无需登录、无需服务器，所有数据保存在浏览器本地。更新了多语言支持、周视图等功能！
+### Overview
 
-**在线体验**  
-https://zuixihuancaibaole-glitch.github.io/daily-planner-/
+Daily Planner is a single-file (`daily-planner.html`) productivity app that runs entirely in your browser. Open the file, start planning — no installation, no internet connection, no accounts required. All data is stored locally in your browser's `localStorage`.
 
-## 主要功能
+### ✨ Features
 
-- 6 种精致主题（暖墨、海蓝、森林、午夜、玫瑰、沙漠）
-- 多语言支持（英文/中文切换）
-- 日视图和周视图，便于规划
-- 时间段任务规划 + 当前任务自动高亮（“进行中”）
-- 按小时显示的时间轴视图
-- 任务支持拖拽排序
-- 三级优先级（高/中/低） + 彩色标签
-- 支持分类/标签（工作、学习、生活、健康、社交、娱乐、其他）
-- 便签（Sticky Notes）功能
-- 每日笔记区域（自动保存）
-- 完成进度统计 + 进度条
-- 一键打印友好布局
-- 通知横幅（用于更新提醒）
-- 自动清理旧数据（180 天后）
-- 响应式设计，手机和电脑均良好适配
-- 首次加载后完全支持离线使用
+**Planning**
+- Add daily plans with start time, end time, duration, name, notes, category, and priority
+- Real-time "in progress" highlight — the current task glows automatically
+- Drag-and-drop to reorder tasks
+- Sort by time, priority, or creation order
+- Task completion tracking with progress bar
 
-## 快速开始
+**Views**
+- **Day View** — focused single-day planning with sidebar stats, timeline, and sticky notes
+- **Week View** — 7-day grid overview with weekly goals that sync to daily sticky notes
 
-### 方式一：直接在线使用
-打开链接即可：  
-https://zuixihuancaibaole-glitch.github.io/daily-planner-/
+**Pomodoro Timer 🍅**
+- Launch a timer directly from any task
+- Auto-calculates remaining time if the task is currently in progress and has an end time
+- Fullscreen focus mode with animated countdown ring
+- Pause, resume, and reset support
+- Plays a sound and sends a browser notification when the session ends
 
-### 方式二：本地运行
-1. 从本仓库下载 `index.html` 文件  
-2. 双击打开文件，即可永久离线使用
+**Sticky Notes & Weekly Goals**
+- Global sticky notes panel for quick jottings
+- Weekly goals defined in the week view auto-appear in the day view sticky panel
+- Bidirectional sync — toggle or delete from either view
 
-### 方式三：自己部署
-- Fork 本仓库  
-- 或直接将 `index.html` 上传至 GitHub Pages / Vercel / Netlify 等静态托管平台
+**Customization**
+- 6 built-in themes: Default, Ocean, Forest, Midnight, Rose, Sand
+- Full Chinese / English bilingual interface (toggle in the header)
 
-## 技术栈
+**Data Management**
+- Export all data (tasks, notes, stickies) to a JSON file for backup
+- Import from a JSON backup — merges with existing data
+- Storage usage monitor with manual cleanup tools (60-day prune or full clear)
+- Silent auto-prune of data older than 180 days to keep localStorage lean
 
-- HTML5 + CSS3（使用 CSS 变量实现主题）
-- 原生 JavaScript（零框架）
-- localStorage 用于数据持久化
-- Google Fonts：Playfair Display、DM Sans、DM Mono
+**Other**
+- Browser notifications before tasks start (opt-in)
+- Live clock in the header
+- Date navigation (previous / next day, or pick from calendar)
+- Print-friendly layout
+- Fully responsive design (mobile-friendly)
 
-## 开源许可
+### 🚀 Getting Started
 
-MIT License  
-版权所有 © 2026 Leo (@LeoLy1005)
+1. Download `daily-planner.html`
+2. Open it in any modern browser (Chrome, Firefox, Safari, Edge)
+3. That's it — start planning!
 
-欢迎自由 fork、修改，并可用于个人或商业用途。
+> **Tip:** Bookmark the local file path or host it on GitHub Pages for quick access from any device.
 
-Star 支持一下项目～感谢！
+### 🌐 Hosting on GitHub Pages
+
+1. Fork or upload this repository
+2. Go to **Settings → Pages**
+3. Set source to `main` branch, `/ (root)` folder
+4. Your planner will be live at `https://<your-username>.github.io/<repo-name>/daily-planner.html`
+
+### 📦 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Structure | HTML5 |
+| Styling | CSS3 (CSS Variables, Grid, Flexbox) |
+| Logic | Vanilla JavaScript (ES6+) |
+| Storage | `localStorage` |
+| Fonts | Google Fonts (Playfair Display, DM Sans, DM Mono) |
+| Icons | Unicode Emoji |
+
+No frameworks. No build tools. No `node_modules`. Just one file.
+
+### 🗂 File Structure
+
+```
+daily-planner.html   ← the entire application
+README.md            ← this file
+```
+
+### 📄 License
+
+MIT License — free to use, modify, and distribute.
+
+---
+
+## 中文
+
+### 项目简介
+
+日计划是一款**单文件**（`daily-planner.html`）生产力应用，完全在浏览器中运行。打开文件即可开始规划，无需安装、无需网络、无需账号。所有数据保存在浏览器的 `localStorage` 中，完全本地化。
+
+### ✨ 功能列表
+
+**计划管理**
+- 添加计划，支持：开始时间、结束时间、持续时长、名称、备注、分类、优先级
+- 实时"进行中"高亮——当前任务自动发光标记
+- 拖拽排序
+- 支持按时间、优先级、添加顺序排序
+- 任务完成追踪与进度条
+
+**视图模式**
+- **日视图** — 专注单日规划，含统计面板、时间轴、便签
+- **周视图** — 7 天网格总览，周目标自动同步至每日便签
+
+**番茄钟 🍅**
+- 直接从任意计划启动计时器
+- 若计划正在进行且设置了结束时间，自动计算剩余时长
+- 全屏专注模式，带动画倒计时圆环
+- 支持暂停、继续、重置
+- 计时结束时播放提示音并发送浏览器通知
+
+**便签与周目标**
+- 全局便签面板，随手记录
+- 在周视图中添加的周目标会自动出现在日视图的便签区
+- 双向同步——在任意视图勾选或删除均实时同步
+
+**个性化**
+- 6 款内置主题：默认、海洋、森林、午夜、玫瑰、沙漠
+- 完整中英文双语界面（顶栏一键切换）
+
+**数据管理**
+- 将所有数据（计划、笔记、便签）导出为 JSON 文件备份
+- 从 JSON 备份恢复，与现有数据合并
+- 存储用量监控，支持手动清理（60 天前数据或全部清除）
+- 自动静默清理 180 天前的数据，保持 localStorage 轻量
+
+**其他**
+- 任务开始前的浏览器通知（用户授权后生效）
+- 顶栏实时时钟
+- 日期导航（上一天/下一天，或从日历选择）
+- 打印友好布局
+- 完整响应式设计，移动端适配
+
+### 🚀 快速开始
+
+1. 下载 `daily-planner.html`
+2. 用任意现代浏览器打开（Chrome、Firefox、Safari、Edge）
+3. 就这些——开始规划吧！
+
+> **小技巧：** 将本地文件路径加入书签，或部署到 GitHub Pages，方便从任意设备访问。
+
+### 🌐 部署到 GitHub Pages
+
+1. Fork 或上传本仓库
+2. 进入 **Settings → Pages**
+3. 将 Source 设置为 `main` 分支，`/ (root)` 目录
+4. 稍等片刻，即可通过 `https://<用户名>.github.io/<仓库名>/daily-planner.html` 访问
+
+### 📦 技术栈
+
+| 层级 | 技术 |
+|------|------|
+| 结构 | HTML5 |
+| 样式 | CSS3（CSS 变量、Grid、Flexbox）|
+| 逻辑 | 原生 JavaScript（ES6+）|
+| 存储 | `localStorage` |
+| 字体 | Google Fonts（Playfair Display、DM Sans、DM Mono）|
+| 图标 | Unicode Emoji |
+
+无框架，无构建工具，无 `node_modules`，只有一个文件。
+
+### 🗂 文件结构
+
+```
+daily-planner.html   ← 完整应用
+README.md            ← 本文件
+```
+
+### 📄 许可证
+
+MIT 许可证——可自由使用、修改与分发。
+
+---
+
+<div align="center">
+
+Made with ☕ and lots of planning.  
+用 ☕ 和无数规划打造。
+
+</div>
