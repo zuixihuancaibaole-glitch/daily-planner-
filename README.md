@@ -1,8 +1,8 @@
 # 日计划 · Daily Planner
 
-用「开始时间 + 持续时间」快速排出一天的时间表，在周视图回顾进度，也可以用 Wallpaper Engine 把今天的计划放到 Windows 桌面，直接勾选完成。
+用「开始时间 + 持续时间」排出一天的时间表，把常用安排保存为计划卡片，在周视图回顾进度。也可以用 Wallpaper Engine 把今天的计划放到 Windows 桌面，直接勾选完成。
 
-Build a schedule from start times and durations, review your week, and optionally check off today's tasks from your Windows desktop with Wallpaper Engine.
+Build a schedule from start times and durations, save recurring tasks as plan cards, and review your week. You can also check off today's tasks from your Windows desktop with Wallpaper Engine.
 
 [中文](#中文) · [English](#english) · [下载 / Download `index.html`](https://raw.githubusercontent.com/zuixihuancaibaole-glitch/daily-planner-/main/index.html)
 
@@ -25,6 +25,14 @@ Build a schedule from start times and durations, review your week, and optionall
 | 点击开始时间旁的「现在」 | 填入电脑当前的时分；已填的持续时间也会用于重算结束时间。 |
 
 适合连续安排课程、学习和休息：先定第一项几点开始，后面逐条填名称和分钟数即可。跨午夜时，按时长计算的结束时刻会回到 `00:00` 之后，但任务仍属于所选日期；从起止时间反算时长仅适用于结束晚于开始的同日时段。
+
+### 用计划卡片复用常用安排
+
+1. 在「添加计划」中填好开始时间，启用「计划卡片」按钮。
+2. 要保存卡片，填写事件名称和持续时间（1–1439 分钟），按需填写备注、分类和优先级，然后点「计划卡片」→「保存当前表单」。
+3. 要套用卡片，先填这次的开始时间，再点「计划卡片」，选中一张并点「套用卡片」。表单会带入卡片信息并算出结束时间。检查或修改表单后，点「添加计划」。
+
+例如，开始时间填 `19:30`，套用一张 **45 分钟**的刷题卡片，结束时间就会填为 `20:15`。若计算出的结束时间会跨到次日，页面会提示提前开始时间，并保留当前表单。
 
 ### 日程、目标与专注
 
@@ -55,8 +63,8 @@ Build a schedule from start times and durations, review your week, and optionall
 
 ### 数据、离线使用与部署
 
-- **保存与备份：**计划、每日笔记、便签（包括周目标）保存在当前浏览器的 IndexedDB，并保留 `localStorage` 缓存。主题、语言和视图偏好也保存在本地。顶部 **数据 → 导出 JSON** 可备份计划和笔记，换浏览器、电脑或站点地址时可导入。
-- **导入规则：**备份中已有的日期会覆盖对应日期的任务列表和笔记；若文件包含便签列表，会替换现有便签及周目标。导入前建议先导出当前数据。
+- 计划、每日笔记和便签（包括周目标）保存在当前浏览器的 IndexedDB，并保留 `localStorage` 缓存。计划卡片及主题、语言和视图偏好保存在 `localStorage`。顶部 **数据 → 导出 JSON** 可备份计划、笔记、便签和计划卡片，换浏览器、电脑或站点地址时可导入。
+- 导入时，备份中已有的日期会覆盖对应日期的任务列表和笔记。若文件包含便签列表，会替换现有便签及周目标。计划卡片会合并，内容完全相同的卡片只保留一张。导入前建议先导出当前数据。
 - **历史清理：**数据面板可查看存储用量、清理 60 天前的计划和每日笔记，或清理今天以前的所有计划和每日笔记。页面加载时也会清理超过 180 天的计划和每日笔记；想长期保留请定期导出。
 - **离线使用：**单个 HTML 可离线运行核心功能。无法加载 Google Fonts 时，页面使用系统备用字体。
 - **GitHub Pages：**在自己的 GitHub 仓库中打开 **Settings → Pages**，选择 **Deploy from a branch**，设为 `main` 和 `/ (root)`，保存后使用设置页提供的站点地址。部署只发布网页；壁纸同步服务仍在本机运行。[GitHub Pages 官方说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
@@ -71,6 +79,14 @@ Download [`index.html`](index.html) and open it in a browser. No installation or
 - Change the end time to `09:30` to calculate a duration of `60` minutes. If you then change the start to `08:45`, the planner keeps the duration and moves the end to `09:45`.
 - The next entry defaults to the most recently added task's end time, or its start time when it has no end. **Now** fills in the current time and recalculates the end if a duration is already set.
 - Adding minutes can wrap the clock past midnight while keeping the task on its selected date. Calculating a duration from two times works when the end is later than the start on the same day.
+
+### Reuse common tasks with Plan Cards
+
+1. Set a start time in the **Add Plan** form to enable **Plan Cards**.
+2. To save a card, enter an event name and a duration of 1–1439 minutes. Add notes, a category, and a priority as needed. Choose **Plan Cards → Save Current Form**.
+3. To use a card, enter the start time for this occasion, open **Plan Cards**, select a card, and choose **Apply Card**. The form fills in the saved fields and calculates the end time. Review or edit the form, then choose **Add Plan**.
+
+For example, applying a **45-minute** practice card at `19:30` fills in an end time of `20:15`. If the card would end on the next day, the planner keeps the current form and asks you to choose an earlier start time.
 
 ### Planning, notes, and focus
 
@@ -100,8 +116,8 @@ Wallpaper sync stays on the same computer. If a hosted page is blocked from reac
 
 ### Storage, offline use, and deployment
 
-- The current browser stores plans, daily notes, stickies, and weekly goals in IndexedDB with a `localStorage` cache. Language, theme, and view preferences are local too. Export a JSON backup from **Data** before moving to a different browser, device, or site address.
-- Import replaces task lists and daily notes for matching dates. If the backup contains stickies, it replaces the sticky note list, including weekly goals. Export your current data first if you need a recovery copy.
+- The current browser stores plans, daily notes, stickies, and weekly goals in IndexedDB with a `localStorage` cache. Plan cards and language, theme, and view preferences are stored in `localStorage`. Export plans, notes, stickies, and plan cards from **Data** as a JSON backup before moving to a different browser, device, or site address.
+- Import replaces task lists and daily notes for matching dates. If the backup contains stickies, it replaces the sticky note list, including weekly goals. Plan cards are merged, with identical cards kept once. Export your current data first if you need a recovery copy.
 - The data panel shows storage usage and offers cleanup for tasks and daily notes older than 60 days or dated before today. Startup also clears tasks and notes older than 180 days. Export records you want to keep.
 - The downloaded HTML runs the core planner offline and uses system fallback fonts if Google Fonts is unavailable.
 - For GitHub Pages, go to **Settings → Pages → Deploy from a branch**, choose `main` and `/ (root)`, and open the URL shown after deployment. Pages hosts the planner only; the wallpaper service runs on your computer. [GitHub Pages publishing guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
