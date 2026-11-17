@@ -93,7 +93,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
 .form-full{grid-column:1/-1;}
 label{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-weight:600;margin-bottom:5px;}
-input[type="text"],input[type="time"],select,textarea{width:100%;padding:8px 11px;border:1.5px solid var(--line);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s;}
+input[type="text"],input[type="time"],input:where(#shift-minutes),select,textarea{width:100%;padding:8px 11px;border:1.5px solid var(--line);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--bg);outline:none;transition:border-color .15s,box-shadow .15s;}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--now-glow);}
 textarea{resize:vertical;min-height:60px;}
 .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:4px;}
@@ -116,7 +116,7 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 
 /* ── TASK LIST ───────────────────────────────────────────────────── */
 #task-list{display:flex;flex-direction:column;contain:content;}
-.plan-toolbar{padding:10px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:flex-end;}
+.plan-toolbar{padding:10px 22px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;}
 .plan-toolbar .btn{font-size:.76rem;padding:6px 12px;}
 .plan-toolbar .btn:disabled{opacity:.45;cursor:not-allowed;}
 @media print{.plan-toolbar{display:none;}}
@@ -426,6 +426,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 #confirm-modal .modal{width:400px;max-width:92vw;text-align:center;}
 #confirm-modal .confirm-msg{font-size:.92rem;color:var(--ink-light);line-height:1.65;margin:2px 0 20px;word-break:break-word;}
 #confirm-modal .modal-actions{justify-content:center;}
+#shift-dialog{margin:auto;max-width:calc(100vw - 32px);color:var(--ink);opacity:1;transform:none;}
+#shift-dialog::backdrop{background:rgba(0,0,0,.5);}
+#shift-dialog p{font-size:.86rem;color:var(--ink-light);margin-bottom:12px;}
+#shift-dialog #shift-error:empty{margin:0;}
+#shift-error:not(:empty){color:var(--accent);margin:8px 0 0;}
 
 /* Task row motion */
 .task-item{transition:opacity .22s ease,transform .22s var(--ease-out),background .18s,border-left-color .18s;}
@@ -687,6 +692,7 @@ input[type="text"],input[type="time"],input[type="number"],select,textarea{min-h
         </div>
         <div class="plan-toolbar">
           <button type="button" id="copy-next-day-btn" class="btn btn-secondary" onclick="copyPlansToNextDay()" data-i18n="copyNextDay"></button>
+          <button type="button" id="shift-plans-btn" class="btn btn-secondary" onclick="openShiftPlans()" data-i18n="shiftPlans" disabled></button>
         </div>
         <div id="task-list"></div>
         <div class="progress-area" id="progress-area" style="display:none">
@@ -945,6 +951,31 @@ input[type="text"],input[type="time"],input[type="number"],select,textarea{min-h
   </div>
 </div>
 
+<dialog class="modal" id="shift-dialog" aria-labelledby="shift-title" aria-describedby="shift-hint">
+  <form onsubmit="shiftPlans(event)">
+    <h3 id="shift-title" data-i18n="shiftPlans"></h3>
+    <p id="shift-hint" data-i18n="shiftHint"></p>
+    <div class="form-grid">
+      <div>
+        <label for="shift-direction" data-i18n="shiftDirection"></label>
+        <select id="shift-direction">
+          <option value="earlier" data-i18n-opt="shiftEarlier"></option>
+          <option value="later" data-i18n-opt="shiftLater" selected></option>
+        </select>
+      </div>
+      <div>
+        <label for="shift-minutes" data-i18n="shiftMinutes"></label>
+        <input id="shift-minutes" type="number" min="1" max="1439" step="1" required autofocus>
+      </div>
+    </div>
+    <p id="shift-error" role="alert"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" onclick="this.closest('dialog').close()" data-i18n="cancel"></button>
+      <button type="submit" class="btn btn-primary" data-i18n="shiftApply"></button>
+    </div>
+  </form>
+</dialog>
+
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // i18n DICTIONARY
@@ -982,6 +1013,13 @@ const I18N = {
     copyNextDay:'复制到明天', copyEmpty:'当日没有可复制的计划',
     confirmCopyNextDay:'{date} 已有 {existing} 条计划。将追加当日的 {count} 条计划，副本均为未完成，是否继续？',
     confirmCopy:'追加计划', toastCopied:'已复制 {count} 条计划到 {date}',
+    shiftPlans:'批量调整时间', shiftHint:'将今天正在进行和接下来有开始时间的未完成计划统一提前或延后。',
+    shiftDirection:'方向', shiftEarlier:'提前', shiftLater:'延后',
+    shiftMinutes:'分钟数', shiftApply:'确认调整', shiftEmpty:'今天没有可调整时间的计划',
+    shiftMidnight:'调整后有计划会跨日期，请减少分钟数。',
+    shiftInvalidTime:'请先修正「{name}」的开始或结束时间。',
+    toastShifted:'已将 {count} 条计划延后 {minutes} 分钟', toastAdvanced:'已将 {count} 条计划提前 {minutes} 分钟',
+    toastShiftUndone:'已恢复 {count} 条计划的时间', shiftUndoChanged:'这些计划的时间已变化，无法撤销本次调整。',
     sortBy:'排序：', sortTime:'按时间', sortPri:'按优先级', sortAdded:'添加顺序',
     allDay:'全天', priHighLabel:'高优先', priMidLabel:'中优先', priLowLabel:'低优先',
     nowBadge:'进行中', editTitle:'编辑', delTitle:'删除',
@@ -1089,6 +1127,13 @@ const I18N = {
     copyNextDay:'Copy to next day', copyEmpty:'There are no plans to copy',
     confirmCopyNextDay:'{date} already has {existing} plans. Append {count} plans from this day with completion reset?',
     confirmCopy:'Append plans', toastCopied:'Copied {count} plans to {date}',
+    shiftPlans:'Shift plans', shiftHint:"Move today's in-progress and upcoming unfinished plans earlier or later.",
+    shiftDirection:'Direction', shiftEarlier:'Earlier', shiftLater:'Later',
+    shiftMinutes:'Minutes', shiftApply:'Apply shift', shiftEmpty:'No plans to shift today',
+    shiftMidnight:'A plan would move outside today. Enter fewer minutes.',
+    shiftInvalidTime:'Correct the start or end time for "{name}" first.',
+    toastShifted:'Delayed {count} plans by {minutes} minutes', toastAdvanced:'Moved {count} plans {minutes} minutes earlier',
+    toastShiftUndone:'Restored times for {count} plans', shiftUndoChanged:'The plans have changed since this shift and cannot be restored.',
     sortBy:'Sort:', sortTime:'By Time', sortPri:'By Priority', sortAdded:'By Added',
     allDay:'All Day', priHighLabel:'High', priMidLabel:'Med', priLowLabel:'Low',
     nowBadge:'Now', editTitle:'Edit', delTitle:'Delete',
@@ -1358,9 +1403,9 @@ function getNowMinutes() { const n=new Date(); return n.getHours()*60+n.getMinut
 function toMin(ts) { if(!ts) return null; const[h,m]=ts.split(':').map(Number); return h*60+m; }
 function minsToTime(m) { return String(Math.floor(m/60)%24).padStart(2,'0')+':'+String(m%60).padStart(2,'0'); }
 function timeDiff(a,b) { const s=toMin(a),e=toMin(b); return(s!=null&&e!=null&&e>s)?e-s:null; }
-function isTaskNow(task) {
+function isTaskNow(task, now=getNowMinutes()) {
   if (!task.start||currentDate!==todayStr()) return false;
-  const now=getNowMinutes(), st=toMin(task.start);
+  const st=toMin(task.start);
   return task.end ? now>=st&&now<toMin(task.end) : now>=st&&now<st+60;
 }
 // Get Monday of the week containing 'dateStr', offset by weekOffset
@@ -1383,6 +1428,7 @@ function updateClock() {
   const n=new Date(), p=v=>String(v).padStart(2,'0');
   const s=`${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
   const el=document.getElementById('live-clock');
+  if(el.textContent.slice(0,5)!==s.slice(0,5)) updateShiftButton();
   if(el.textContent!==s) el.textContent=s;
 }
 setInterval(updateClock,1000); updateClock();
@@ -2104,6 +2150,7 @@ function renderAll(skipDefer){
 
 function renderTasks() {
   document.getElementById('copy-next-day-btn').disabled = !(tasks[currentDate] || []).length;
+  updateShiftButton();
   const list=getSortedTasks(), container=document.getElementById('task-list');
   const prevKeys=new Set(_taskNodes.keys());
   _taskNodes.clear();
@@ -2186,6 +2233,7 @@ function removeTaskNodeAnimated(id) {
 }
 
 function scheduleStatsTimeline() {
+  updateShiftButton();
   if(_rafStats) cancelAnimationFrame(_rafStats);
   _rafStats=requestAnimationFrame(()=>{renderStats();renderTimeline();_rafStats=null;});
 }
@@ -2472,6 +2520,98 @@ function copyPlansToNextDay() {
   } else {
     append();
   }
+}
+function getShiftablePlans() {
+  if (currentDate !== todayStr()) return [];
+  const now = getNowMinutes();
+  return (tasks[currentDate] || []).filter(task => {
+    if (task.done || typeof task.start !== 'string' || !task.start) return false;
+    return toMin(task.start) >= now || ((!task.end || typeof task.end === 'string') && isTaskNow(task, now));
+  });
+}
+function updateShiftButton() {
+  document.getElementById('shift-plans-btn').disabled = !getShiftablePlans().length;
+}
+function openShiftPlans() {
+  if (!getShiftablePlans().length) {
+    updateShiftButton();
+    return;
+  }
+  document.getElementById('shift-minutes').value = '15';
+  document.getElementById('shift-direction').value = 'later';
+  document.getElementById('shift-error').textContent = '';
+  document.getElementById('shift-dialog').showModal();
+  document.getElementById('shift-minutes').select();
+}
+function shiftPlans(event) {
+  event.preventDefault();
+  const input = document.getElementById('shift-minutes');
+  if (!input.reportValidity()) return;
+  const minutes = input.valueAsNumber;
+  const earlier = document.getElementById('shift-direction').value === 'earlier';
+  const offset = earlier ? -minutes : minutes;
+  const date = currentDate;
+  const plans = getShiftablePlans();
+  const error = document.getElementById('shift-error');
+  if (!plans.length) {
+    error.textContent = t('shiftEmpty');
+    return;
+  }
+
+  const changes = [];
+  const clockTime = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+  for (const plan of plans) {
+    if (!clockTime.test(plan.start) || (plan.end && (typeof plan.end !== 'string' || !clockTime.test(plan.end)))) {
+      error.textContent = t('shiftInvalidTime', {name: plan.name});
+      return;
+    }
+    const start = toMin(plan.start);
+    const end = toMin(plan.end);
+    if (end !== null && end < start) {
+      error.textContent = t('shiftInvalidTime', {name: plan.name});
+      return;
+    }
+    // shortcut: keep all changes on the same date until overnight plans have a date-aware model.
+    if (start + offset < 0 || (end ?? start) + offset >= 24 * 60) {
+      error.textContent = t('shiftMidnight');
+      return;
+    }
+    changes.push({
+      id: plan.id, start: plan.start, end: plan.end,
+      shiftedStart: minsToTime(start + offset),
+      shiftedEnd: end === null ? plan.end : minsToTime(end + offset)
+    });
+  }
+
+  for (const [index, plan] of plans.entries()) {
+    plan.start = changes[index].shiftedStart;
+    plan.end = changes[index].shiftedEnd;
+    notifiedTasks.delete(plan.id);
+  }
+  document.getElementById('shift-dialog').close();
+  invalidateSortedCache();
+  save(true);
+  renderAll();
+  showToast(t(earlier ? 'toastAdvanced' : 'toastShifted', {count: plans.length, minutes}), {
+    duration: 6000,
+    undo() {
+      let restored = 0;
+      for (const change of changes) {
+        const plan = (tasks[date] || []).find(task => task.id === change.id);
+        if (!plan || plan.start !== change.shiftedStart || plan.end !== change.shiftedEnd) continue;
+        plan.start = change.start;
+        plan.end = change.end;
+        restored++;
+      }
+      if (restored) {
+        invalidateSortedCache();
+        save(true);
+        renderAll();
+        if (currentView === 'week') renderWeek();
+      }
+      showToast(restored ? t('toastShiftUndone', {count: restored}) : t('shiftUndoChanged'));
+    }
+  });
 }
 function deleteTask(id) {
   const list=tasks[currentDate]||[];

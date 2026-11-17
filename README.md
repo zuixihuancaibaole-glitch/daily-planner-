@@ -33,13 +33,14 @@ Build a schedule from start times and durations, review your week, and optionall
 | 日视图与时间轴 | 用左右箭头翻日，或点日期选一天。日视图显示任务总数、完成数、待完成数、重要事项和完成进度；时间轴展示有开始时间的任务和当前时刻，正在进行的未完成任务会高亮。 |
 | 任务管理 | 勾选完成、编辑名称与时间等信息，或删除。支持按时间、优先级、添加顺序查看，也可拖动排序。删除任务会先确认，之后可在提示条撤销。 |
 | 复制到明天 | 把所选日期的任务复制到它的下一天，并跳到目标日期。副本保留原时间、备注、分类与优先级，完成状态重置。目标日期已有任务时，确认后追加，可撤销。 |
+| 批量调整时间 | 在今天的日视图点击「批量调整时间」，选「提前」或「延后」，输入分钟数并确认。正在进行和尚未开始的未完成计划会一起移动；已完成、已结束和没有开始时间的计划不变。 |
 | 周视图 | 按周一至周日查看任务预览、完成率和未完成的高优先级任务数。可翻周、返回本周，或点某一天进入其日视图。 |
 | 便签、周目标和每日笔记 | 「当日」便签只在选定日期显示，「全部」便签跨日显示。周目标可在周视图添加，也会出现在当周日视图的便签区，两处均可勾选或删除。每日笔记按日期自动保存。 |
 | 任务番茄钟 | 点击任务旁的 🍅。正在进行且有结束时间的任务可按剩余时间倒计时，也可手动设定 1–480 分钟。支持暂停、继续和重置；时间到会尝试播放提示音，在浏览器允许时发送通知。 |
 | 浏览器提醒 | 按页面提示开启通知并保持页面打开。当天未完成、设有开始时间的任务可在开始前 1–10 分钟收到提醒；本地文件的通知权限取决于浏览器。 |
 | 显示与打印 | 顶栏包含实时钟、打印按钮和七种主题：纸感、海洋、森林、午夜、玫瑰、沙色、薄荷。布局会随窗口宽度调整。 |
 
-本机 `daily-planner.html` 另有「批量顺延」：统一推迟今天正在进行和尚未开始的有时间任务，跳过已完成任务和全天任务；如果顺延会跨午夜，则整批不改。操作后可撤销。当前 GitHub 版 `index.html` 尚未包含这个功能。
+例如，选「提前」`20` 分钟会将 `15:00–15:45` 移到 `14:40–15:25`，时长不变。只有开始时间的计划只调整开始时间。如果任一计划会跨到前一天或后一天，整批不会改动；调整后可在提示条点击「撤销」。
 
 ### 把今日计划放到 Windows 桌面
 
@@ -78,12 +79,13 @@ Download [`index.html`](index.html) and open it in a browser. No installation or
 | Day view and timeline | Browse with the date arrows or picker. See completion stats, timed tasks and the current time on the timeline, and a highlight for unfinished tasks in progress. |
 | Task management | Check off, edit, or delete tasks. Sort by time, priority, or creation order, or drag to reorder. Confirm a deletion and use the toast to undo it. |
 | Copy to next day | Copy the selected day's tasks as unfinished, then open the next date. The app asks before appending to existing tasks, and the copy can be undone. |
+| Shift plans | In today's day view, choose **Shift plans**, select **Earlier** or **Later**, enter the number of minutes, and confirm. This moves in-progress and upcoming unfinished tasks. Completed tasks, tasks that have ended, and tasks without a start time stay as they are. |
 | Week view | Browse Monday to Sunday, see task previews and weekly completion, and select a day to open its plan. Jump back to the current week at any time. |
 | Stickies, weekly goals, and notes | Use date-specific or all-days stickies. Weekly goals appear in both the week view and the corresponding daily sticky area. Daily notes autosave for the selected date. |
 | Pomodoro timer and reminders | Open the timer from a task to use its remaining time or set 1–480 minutes yourself. Pause, resume, or reset. The timer attempts to play a sound and can send a notification when allowed. With browser permission and the page open, today's unfinished timed tasks can also trigger alerts 1–10 minutes before they start. Local-file notification support varies by browser. |
 | Appearance and printing | Switch between Chinese and English and seven themes. The page adapts to the window width and offers a live clock and a print button. |
 
-The local `daily-planner.html` also has **Delay plans**, which shifts today's in-progress and upcoming unfinished timed tasks together, with Undo. The operation is rejected if a change would cross midnight. This feature is not yet in the GitHub `index.html`.
+For example, shifting `15:00–15:45` **Earlier** by `20` minutes gives `14:40–15:25`, with the same duration. Tasks with only a start time keep that format. The entire shift is blocked if any task would move outside today. Use **Undo** in the confirmation toast to restore the previous times.
 
 ### Use today's plan as a Windows wallpaper
 
