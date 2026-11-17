@@ -1,8 +1,8 @@
-# Daily Planner · 日计划
+# 日计划 · Daily Planner
 
-把一天的安排放进时间轴，用周视图回顾进度，把临时想法和本周目标留在便签里。日计划是一个单页网页应用，下载后可直接用浏览器打开。
+用「开始时间 + 持续时间」快速排出一天的时间表，在周视图回顾进度，也可以用 Wallpaper Engine 把今天的计划放到 Windows 桌面，直接勾选完成。
 
-Plan your day on a timeline, review the week at a glance, and keep quick notes and weekly goals beside your schedule. Download one HTML file and open it in your browser.
+Build a schedule from start times and durations, review your week, and optionally check off today's tasks from your Windows desktop with Wallpaper Engine.
 
 [中文](#中文) · [English](#english) · [下载 / Download `index.html`](https://raw.githubusercontent.com/zuixihuancaibaole-glitch/daily-planner-/main/index.html)
 
@@ -10,85 +10,101 @@ Plan your day on a timeline, review the week at a glance, and keep quick notes a
 
 ### 快速开始
 
-1. 下载仓库根目录的 `index.html`。如果链接打开的是 HTML 源码，可在浏览器中按 **Ctrl+S** 保存为 `index.html`。
-2. 用浏览器打开文件。页首可以切换中英文、配色以及日视图和周视图。
-3. 选好日期，在新增计划表单中填写任务名称。也可补充开始时间、结束时间或预计时长，以及分类、优先级和备注。
+下载 [`index.html`](index.html)，用浏览器打开即可使用。无需安装依赖或注册账号。顶部可切换中英文、日视图和周视图。选好日期，在「添加计划」中输入任务名称，按 Enter 或点击「添加计划」。时间、备注和分类均可选，也可设置高、中、低优先级。没有开始时间的任务显示为「全天」。
 
-### 安排一天和一周
+### 用持续时间排出一天
+
+「开始时间」「结束时间」和「持续时间」会联动，持续时间以**分钟**输入。
+
+| 操作 | 结果 |
+| --- | --- |
+| 填 `08:30` 为开始，持续时间填 `45` | 自动算出结束时间 `09:15`。未填开始时间时，持续时间不可编辑。 |
+| 把结束时间改成 `09:30` | 同一天内，结束晚于开始时，持续时间反算为 `60` 分钟。 |
+| 保留 `60` 分钟，把开始改成 `08:45` | 结束时间跟着移到 `09:45`，任务时长不变。 |
+| 添加这条计划，再录入下一条 | 表单将最近添加的计划的结束时间带到下一条的开始栏；没填结束时间时，沿用它的开始时间。 |
+| 点击开始时间旁的「现在」 | 填入电脑当前的时分；已填的持续时间也会用于重算结束时间。 |
+
+适合连续安排课程、学习和休息：先定第一项几点开始，后面逐条填名称和分钟数即可。跨午夜时，按时长计算的结束时刻会回到 `00:00` 之后，但任务仍属于所选日期；从起止时间反算时长仅适用于结束晚于开始的同日时段。
+
+### 日程、目标与专注
 
 | 功能 | 用法 |
 | --- | --- |
-| 日视图 | 用日期箭头或日历跳到指定日期。任务列表用于勾选、编辑、删除和排序，时间轴展示有时间安排的任务，进度区显示当日完成情况。当前时间落在某项未完成任务的时间段内时，该任务会高亮。 |
-| 任务排序 | 可按时间、优先级或添加顺序查看，也可拖动任务调整位置。 |
-| 复制计划到次日 | 将当前所选日期的任务追加到下一天，并把副本设为未完成。次日已有任务时会先提示确认，复制后可在提示条中撤销。 |
-| 周视图 | 按周一至周日查看任务和完成情况，点击某天可进入对应的日视图。 |
-| 笔记、便签和周目标 | 每日笔记随所选日期保存。便签可以设为「当日」或「全部」。周视图创建的目标也会显示在对应一周的日视图便签区，可从任一视图勾选或删除。 |
-| 番茄钟 | 点击任务旁的 🍅 打开计时器。正在进行且设有结束时间的任务可用剩余时间预填倒计时，也可手动设置。计时器支持暂停、继续和重置，结束时会尝试播放提示音，并在浏览器权限允许时发送通知。 |
-| 开始前提醒 | 在浏览器支持通知的环境中授权，并保持页面开启。当天未完成且设有开始时间的任务可提前 1–10 分钟提醒。直接打开本地文件时，通知能否使用取决于浏览器。 |
+| 日视图与时间轴 | 用左右箭头翻日，或点日期选一天。日视图显示任务总数、完成数、待完成数、重要事项和完成进度；时间轴展示有开始时间的任务和当前时刻，正在进行的未完成任务会高亮。 |
+| 任务管理 | 勾选完成、编辑名称与时间等信息，或删除。支持按时间、优先级、添加顺序查看，也可拖动排序。删除任务会先确认，之后可在提示条撤销。 |
+| 复制到明天 | 把所选日期的任务复制到它的下一天，并跳到目标日期。副本保留原时间、备注、分类与优先级，完成状态重置。目标日期已有任务时，确认后追加，可撤销。 |
+| 周视图 | 按周一至周日查看任务预览、完成率和未完成的高优先级任务数。可翻周、返回本周，或点某一天进入其日视图。 |
+| 便签、周目标和每日笔记 | 「当日」便签只在选定日期显示，「全部」便签跨日显示。周目标可在周视图添加，也会出现在当周日视图的便签区，两处均可勾选或删除。每日笔记按日期自动保存。 |
+| 任务番茄钟 | 点击任务旁的 🍅。正在进行且有结束时间的任务可按剩余时间倒计时，也可手动设定 1–480 分钟。支持暂停、继续和重置；时间到会尝试播放提示音，在浏览器允许时发送通知。 |
+| 浏览器提醒 | 按页面提示开启通知并保持页面打开。当天未完成、设有开始时间的任务可在开始前 1–10 分钟收到提醒；本地文件的通知权限取决于浏览器。 |
+| 显示与打印 | 顶栏包含实时钟、打印按钮和七种主题：纸感、海洋、森林、午夜、玫瑰、沙色、薄荷。布局会随窗口宽度调整。 |
 
-页首提供打印按钮和七款配色，包括默认、海洋、森林、午夜、玫瑰、沙色和薄荷。页面会根据屏幕宽度调整布局。
+本机 `daily-planner.html` 另有「批量顺延」：统一推迟今天正在进行和尚未开始的有时间任务，跳过已完成任务和全天任务；如果顺延会跨午夜，则整批不改。操作后可撤销。当前 GitHub 版 `index.html` 尚未包含这个功能。
 
-### 数据保存、备份和迁移
+### 把今日计划放到 Windows 桌面
 
-- 任务、每日笔记和便签保存在当前浏览器中。应用使用 IndexedDB 持久化，同时保留 `localStorage` 缓存。主题、语言和视图偏好保存在 `localStorage`。
-- 在页首打开数据管理，导出 `daily-planner-YYYY-MM-DD.json`。换浏览器、换设备或改用在线地址前，可以先导出，再在新环境里导入。
-- 导入按日期写入备份中的任务和笔记。备份与现有数据有同一天的记录时，对应数据会被覆盖。备份包含便签时，便签列表会被替换。导入前可以先导出当前数据。
-- 页面加载时会清理超过 180 天的任务和每日笔记。数据管理也提供 60 天前数据清理，以及清理今天以前的任务和每日笔记。需要长期保留的记录可先导出。
+安装并选用配套的 **Wallpaper Engine 网页壁纸**后，桌面会显示今日计划、完成进度、便签和本周目标。网页上修改计划后，壁纸会自动刷新；在壁纸上勾选任务或便签，完成状态也会同步回网页。壁纸还有任务番茄钟、可选的到点提醒，以及缩放、深浅外观、颜色和便签显示设置。
 
-### 离线使用和可选壁纸同步
+1. 准备 Windows、Steam 版 Wallpaper Engine、Node.js 和配套文件。当前仓库只包含网页，另需取得 `wallpaper-sync/每日计划.vbs`、`wallpaper-sync/sync-server.mjs`，以及 Wallpaper Engine 网页壁纸项目（至少包含 `project.json` 和 `wallpaper.html`，保留随附资源）。
+2. 把下载的 `index.html` 另存为 `daily-planner.html`，放在 `wallpaper-sync/` 的上一级目录。双击 `wallpaper-sync/每日计划.vbs`，即可启动本机同步服务并打开网页。也可在项目目录手动运行 `node wallpaper-sync/sync-server.mjs`，再打开自己的计划网页。
+3. 在 Wallpaper Engine 中添加并选用配套网页壁纸。网页顶栏的「桌面壁纸」按钮会尝试推送数据并通过 Steam 打开 Wallpaper Engine；首次使用仍需在引擎中添加并选择壁纸。
+4. 查看 **数据 → 壁纸同步**。显示「已连接」时，两端通过 `http://127.0.0.1:17931/api/data` 同步，通常几秒内更新。若显示离线，先检查 `http://127.0.0.1:17931/health`；服务未运行时重新打开启动器，壁纸可能暂时显示上次缓存。需要随 Windows 登录启动时，可用 `shell:startup` 打开启动文件夹，并添加以 `server` 为参数运行启动器的快捷方式。
 
-下载 HTML 后，日常规划功能可以离线使用。页面会尝试加载 Google Fonts，离线时使用备用字体。
+同步发生在同一台电脑上。跨设备或更换浏览器请用 JSON 备份迁移。通过在线网页同步时，还取决于浏览器是否允许访问本机服务；遇到限制可使用启动器打开本地网页。
 
-页面带有 Wallpaper Engine 入口。壁纸同步需要另行配置本机同步服务和壁纸，页面通过 `127.0.0.1:17931` 与本机服务通信。GitHub 仓库提供网页文件，独立下载即可使用日程、便签和番茄钟。
+### 数据、离线使用与部署
 
-### 部署到 GitHub Pages
-
-将仓库放到自己的 GitHub 账号下，在 **Settings → Pages** 中选择 **Deploy from a branch**，再选择 `main` 分支和 `/ (root)`，点击 **Save**。部署完成后，在 Pages 设置页打开站点地址，根路径会加载 `index.html`。本地文件和在线站点各有浏览器存储，搬迁时使用 JSON 导出与导入。
-
-[GitHub Pages 官方配置说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- **保存与备份：**计划、每日笔记、便签（包括周目标）保存在当前浏览器的 IndexedDB，并保留 `localStorage` 缓存。主题、语言和视图偏好也保存在本地。顶部 **数据 → 导出 JSON** 可备份计划和笔记，换浏览器、电脑或站点地址时可导入。
+- **导入规则：**备份中已有的日期会覆盖对应日期的任务列表和笔记；若文件包含便签列表，会替换现有便签及周目标。导入前建议先导出当前数据。
+- **历史清理：**数据面板可查看存储用量、清理 60 天前的计划和每日笔记，或清理今天以前的所有计划和每日笔记。页面加载时也会清理超过 180 天的计划和每日笔记；想长期保留请定期导出。
+- **离线使用：**单个 HTML 可离线运行核心功能。无法加载 Google Fonts 时，页面使用系统备用字体。
+- **GitHub Pages：**在自己的 GitHub 仓库中打开 **Settings → Pages**，选择 **Deploy from a branch**，设为 `main` 和 `/ (root)`，保存后使用设置页提供的站点地址。部署只发布网页；壁纸同步服务仍在本机运行。[GitHub Pages 官方说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
 ## English
 
-### Getting started
+### Get started and schedule by duration
 
-1. Download `index.html` from the repository. If the download link opens the source, use your browser’s **Save As** command.
-2. Open the file in your browser. Use the header to choose a language, theme, and day or week view.
-3. Select a date and enter a task name. Add a start time, end time or estimated duration, category, priority, and notes as needed.
+Download [`index.html`](index.html) and open it in a browser. No installation or account is required for the planner. Select a date, enter a task name, and press Enter or choose **Add Plan**. Time, notes, and category are optional, and each task can have high, medium, or low priority. Tasks without a start time appear as all-day tasks.
 
-### Planning and focus
+- Enter `08:30` and `45` minutes to get an end time of `09:15`. The duration field becomes available once you set a start time.
+- Change the end time to `09:30` to calculate a duration of `60` minutes. If you then change the start to `08:45`, the planner keeps the duration and moves the end to `09:45`.
+- The next entry defaults to the most recently added task's end time, or its start time when it has no end. **Now** fills in the current time and recalculates the end if a duration is already set.
+- Adding minutes can wrap the clock past midnight while keeping the task on its selected date. Calculating a duration from two times works when the end is later than the start on the same day.
 
-| Feature | How to use it |
+### Planning, notes, and focus
+
+| Feature | What it does |
 | --- | --- |
-| Day view | Navigate with the date arrows or calendar. Check off, edit, delete, or sort tasks. Timed tasks appear on the timeline, and an unfinished task is highlighted during its scheduled time window. |
-| Sorting | View tasks by time, priority, or creation order, or drag a task to rearrange the list. |
-| Copy to the next day | Append the selected date’s tasks to the following day as unfinished copies. The app asks for confirmation when the destination already has tasks and offers Undo immediately after copying. |
-| Week view | Review tasks and completion from Monday through Sunday. Select a day to open its daily plan. |
-| Notes and goals | Daily notes follow the selected date. Sticky notes can be scoped to one day or shown across days. Weekly goals also appear in the sticky notes area for the corresponding week and can be checked off or deleted from either view. |
-| Pomodoro timer | Use the 🍅 button on a task. For a task already in progress with an end time, the timer can start with the time remaining. You can also set the duration yourself, pause, resume, or reset. The app attempts to play a sound when time is up and shows a notification when permitted. |
-| Task reminders | Allow browser notifications and keep the page open for reminders 1–10 minutes before an unfinished task scheduled for today starts. Support for notifications on local files depends on the browser. |
+| Day view and timeline | Browse with the date arrows or picker. See completion stats, timed tasks and the current time on the timeline, and a highlight for unfinished tasks in progress. |
+| Task management | Check off, edit, or delete tasks. Sort by time, priority, or creation order, or drag to reorder. Confirm a deletion and use the toast to undo it. |
+| Copy to next day | Copy the selected day's tasks as unfinished, then open the next date. The app asks before appending to existing tasks, and the copy can be undone. |
+| Week view | Browse Monday to Sunday, see task previews and weekly completion, and select a day to open its plan. Jump back to the current week at any time. |
+| Stickies, weekly goals, and notes | Use date-specific or all-days stickies. Weekly goals appear in both the week view and the corresponding daily sticky area. Daily notes autosave for the selected date. |
+| Pomodoro timer and reminders | Open the timer from a task to use its remaining time or set 1–480 minutes yourself. Pause, resume, or reset. The timer attempts to play a sound and can send a notification when allowed. With browser permission and the page open, today's unfinished timed tasks can also trigger alerts 1–10 minutes before they start. Local-file notification support varies by browser. |
+| Appearance and printing | Switch between Chinese and English and seven themes. The page adapts to the window width and offers a live clock and a print button. |
 
-The header includes a print button and seven themes (Default, Ocean, Forest, Midnight, Rose, Sand, and Mint). The layout adapts to screen width.
+The local `daily-planner.html` also has **Delay plans**, which shifts today's in-progress and upcoming unfinished timed tasks together, with Undo. The operation is rejected if a change would cross midnight. This feature is not yet in the GitHub `index.html`.
 
-### Storage, backups, and migration
+### Use today's plan as a Windows wallpaper
 
-- Tasks, daily notes, and sticky notes are saved in the current browser using IndexedDB and a `localStorage` cache. Theme, language, and view preferences are kept in `localStorage`.
-- Use the data management panel to export a `daily-planner-YYYY-MM-DD.json` backup before moving to another browser, device, or site address. Import it in the new environment to bring your plans and notes over.
-- Import replaces task lists and daily notes for matching dates included in the backup. If the backup includes sticky notes, it replaces the sticky note list. Export your current data first if you want a recovery copy.
-- At startup, the app prunes tasks and daily notes older than 180 days. The data panel also offers cleanup for records older than 60 days or dated before today. Export records you want to keep long term.
+The companion Wallpaper Engine web wallpaper displays today's tasks and progress, stickies, and this week's goals. Task and sticky checkmarks sync back to the webpage. The wallpaper also offers a Pomodoro timer, optional start-time reminders, UI scaling, light and dark appearance, colors, and a switch for the sticky panel.
 
-### Offline use and optional wallpaper integration
+1. Install Node.js and Wallpaper Engine on Windows. The repository contains the planner page; get the separate launcher and sync server (`wallpaper-sync/每日计划.vbs` and `wallpaper-sync/sync-server.mjs`) and the companion Wallpaper Engine project (`project.json`, `wallpaper.html`, and any accompanying assets).
+2. Save `index.html` as `daily-planner.html` one level above `wallpaper-sync/`. Run `每日计划.vbs` to start the local service and open the page. Alternatively, run `node wallpaper-sync/sync-server.mjs` and open the planner yourself.
+3. Add and select the companion project in Wallpaper Engine. The planner's **Desktop Wallpaper** button sends data to the service and tries to launch Wallpaper Engine via Steam; you still need to select the wallpaper on first use.
+4. Check **Data → Wallpaper Sync**. When connected, changes normally appear within a few seconds via `http://127.0.0.1:17931/api/data`. Check `http://127.0.0.1:17931/health` if offline. The wallpaper may show cached data until the service is back. To start the service at Windows sign-in, put a shortcut to the launcher with the `server` argument in the Startup folder.
 
-Core planning features work with the downloaded HTML file offline. The page requests Google Fonts and falls back to available fonts when offline.
+Wallpaper sync stays on the same computer. If a hosted page is blocked from reaching the local service, use the local HTML file. Use JSON backups for moving data across browsers or devices.
 
-The page can launch Wallpaper Engine. Desktop wallpaper synchronization requires a separately configured wallpaper and local service at `127.0.0.1:17931`. Planning, notes, and the timer run directly from the HTML file.
+### Storage, offline use, and deployment
 
-### Deploying to GitHub Pages
-
-In your GitHub repository, open **Settings → Pages**, choose **Deploy from a branch**, then select `main` and `/ (root)`, then click **Save**. Once deployed, open the URL shown in Pages settings. GitHub Pages serves `index.html` at the root of the site. Use JSON export and import to transfer data between a local file and a hosted site.
-
-[GitHub Pages publishing documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- The current browser stores plans, daily notes, stickies, and weekly goals in IndexedDB with a `localStorage` cache. Language, theme, and view preferences are local too. Export a JSON backup from **Data** before moving to a different browser, device, or site address.
+- Import replaces task lists and daily notes for matching dates. If the backup contains stickies, it replaces the sticky note list, including weekly goals. Export your current data first if you need a recovery copy.
+- The data panel shows storage usage and offers cleanup for tasks and daily notes older than 60 days or dated before today. Startup also clears tasks and notes older than 180 days. Export records you want to keep.
+- The downloaded HTML runs the core planner offline and uses system fallback fonts if Google Fonts is unavailable.
+- For GitHub Pages, go to **Settings → Pages → Deploy from a branch**, choose `main` and `/ (root)`, and open the URL shown after deployment. Pages hosts the planner only; the wallpaper service runs on your computer. [GitHub Pages publishing guide](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
 ## 文件与许可 / Files and license
 
-- [`index.html`](index.html) — 网页应用，包含 HTML、CSS 和原生 JavaScript / The entire app in HTML, CSS, and vanilla JavaScript.
+- [`index.html`](index.html) — 单文件网页应用 / The planner in one HTML file, with CSS and vanilla JavaScript.
 - [`LICENSE`](LICENSE) — MIT License.
