@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日计划 · Daily Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ── THEMES ──────────────────────────────────────────────────────── */
@@ -19,6 +21,7 @@
 [data-theme="midnight"]{--bg:#0f1117;--paper:#181b24;--ink:#e8eaf2;--ink-light:#8890a8;--ink-faint:#4a5068;--accent:#7c6ef5;--accent-warm:#f5a26e;--accent-cool:#6ec8f5;--line:#252a3a;--shadow:rgba(0,0,0,.3);--completed:#6ec8a0;--header-bg:#0a0c12;--header-text:#e8eaf2;--header-sub:#f5a26e;--now-bg:#1e1a38;--now-border:#7c6ef5;--now-glow:rgba(124,110,245,.2);}
 [data-theme="rose"]    {--bg:#fdf2f4;--paper:#fff8f9;--ink:#2d1520;--ink-light:#7a4858;--ink-faint:#c0909a;--accent:#c04870;--accent-warm:#e87890;--accent-cool:#8048a0;--line:#f0d0d8;--shadow:rgba(45,21,32,.08);--completed:#a080b8;--header-bg:#2d1520;--header-text:#fdf2f4;--header-sub:#e87890;--now-bg:#fce8f0;--now-border:#e87890;--now-glow:rgba(232,120,144,.18);}
 [data-theme="sand"]    {--bg:#f5efe6;--paper:#fdfaf6;--ink:#2e2418;--ink-light:#7a6048;--ink-faint:#c0a880;--accent:#c08040;--accent-warm:#e0a060;--accent-cool:#6080a0;--line:#e8d8c0;--shadow:rgba(46,36,24,.08);--completed:#80a060;--header-bg:#2e2418;--header-text:#f5efe6;--header-sub:#e0a060;--now-bg:#fef5e0;--now-border:#e0a060;--now-glow:rgba(224,160,96,.18);}
+[data-theme="mint"]    {--bg:#eef8f2;--paper:#f8fdf9;--ink:#123324;--ink-light:#3f7a5a;--ink-faint:#8fb8a0;--accent:#75d491;--accent-warm:#a8e6c0;--accent-cool:#3a6e8c;--line:#d4eadc;--shadow:rgba(18,51,36,.08);--completed:#5ba87a;--header-bg:#123324;--header-text:#eef8f2;--header-sub:#a8e6c0;--now-bg:#e2f5ea;--now-border:#75d491;--now-glow:rgba(117,212,145,.18);}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;padding:0 0 80px;}
@@ -42,6 +45,7 @@ header{background:var(--header-bg);color:var(--header-text);padding:18px 28px 16
 .theme-dot[data-t="midnight"]{background:linear-gradient(135deg,#0f1117 50%,#7c6ef5 50%);}
 .theme-dot[data-t="rose"]    {background:linear-gradient(135deg,#2d1520 50%,#e87890 50%);}
 .theme-dot[data-t="sand"]    {background:linear-gradient(135deg,#2e2418 50%,#e0a060 50%);}
+.theme-dot[data-t="mint"]    {background:linear-gradient(135deg,#123324 50%,#75d491 50%);}
 
 /* ── LANG TOGGLE ─────────────────────────────────────────────────── */
 .lang-btn{display:flex;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:7px;overflow:hidden;flex-shrink:0;}
@@ -58,6 +62,9 @@ header{background:var(--header-bg);color:var(--header-text);padding:18px 28px 16
 /* ── HEADER UTILITY BUTTONS ──────────────────────────────────────── */
 .hd-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.8);padding:5px 10px;border-radius:7px;cursor:pointer;font-size:.72rem;font-family:'DM Sans',sans-serif;font-weight:600;transition:background .2s,color .2s;white-space:nowrap;}
 .hd-btn:hover{background:rgba(255,255,255,.2);color:#fff;}
+.sync-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);margin-right:6px;vertical-align:1px;transition:background .3s,box-shadow .3s;}
+.sync-dot.on{background:#7bd88f;box-shadow:0 0 7px rgba(123,216,143,.75);}
+.sync-dot.off{background:#ff7b6b;box-shadow:0 0 7px rgba(255,123,107,.65);}
 #live-clock{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--header-sub);font-weight:500;letter-spacing:.08em;background:rgba(255,255,255,.07);padding:5px 9px;border-radius:6px;border:1px solid rgba(255,255,255,.12);}
 .date-nav{display:flex;align-items:center;gap:7px;}
 .date-nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s;}
@@ -109,6 +116,10 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 
 /* ── TASK LIST ───────────────────────────────────────────────────── */
 #task-list{display:flex;flex-direction:column;contain:content;}
+.plan-toolbar{padding:10px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:flex-end;}
+.plan-toolbar .btn{font-size:.76rem;padding:6px 12px;}
+.plan-toolbar .btn:disabled{opacity:.45;cursor:not-allowed;}
+@media print{.plan-toolbar{display:none;}}
 .task-item{display:flex;align-items:flex-start;gap:12px;padding:13px 22px;border-bottom:1px solid var(--line);border-left:3px solid transparent;transition:background .18s,border-left-color .18s;cursor:grab;position:relative;}
 .task-item:last-child{border-bottom:none;}
 .task-item:hover{background:var(--bg);}
@@ -187,11 +198,18 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 .sticky-input-row{display:flex;gap:8px;margin-bottom:11px;}
 .sticky-input-row input[type="text"]{flex:1;padding:7px 10px;border:1.5px solid var(--line);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--ink);background:var(--bg);outline:none;width:auto;transition:border-color .2s,background .35s;}
 .sticky-input-row input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--now-glow);}
+.sticky-scope{display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.sticky-scope-label{font-size:.62rem;color:var(--ink-faint);font-weight:600;letter-spacing:.03em;padding-left:2px;}
+.sticky-scope-btns{display:flex;background:var(--line);border-radius:7px;padding:2px;font-size:.68rem;color:var(--ink-faint);}
+.sticky-scope-btn{border:none;background:transparent;color:inherit;font-family:inherit;font-size:inherit;padding:4px 9px;border-radius:6px;cursor:pointer;line-height:1;transition:background .15s,color .15s;white-space:nowrap;}
+.sticky-scope-btn:hover{color:var(--ink);}
+.sticky-scope-btn.active{background:var(--bg);color:var(--ink);font-weight:700;box-shadow:0 0 0 1px var(--line);}
 .sticky-add-btn{width:33px;height:33px;border-radius:7px;border:none;background:var(--accent);color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .18s;}
 .sticky-add-btn:hover{opacity:.82;}
 .sticky-list{display:flex;flex-direction:column;}
 .sticky-item{display:flex;align-items:center;gap:9px;padding:7px 2px;border-bottom:1px solid var(--line);}
 .sticky-item:last-child{border-bottom:none;}
+.sticky-date-badge{display:inline-flex;align-items:center;gap:2px;font-size:.56rem;padding:1px 5px;border-radius:4px;background:var(--line);color:var(--ink-light);font-weight:600;margin-left:5px;vertical-align:middle;letter-spacing:.04em;white-space:nowrap;}
 .sticky-check{width:16px;height:16px;border-radius:4px;flex-shrink:0;border:2px solid var(--line);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s,border-color .12s;}
 .sticky-check:hover{border-color:var(--accent);}
 .sticky-check.checked{background:var(--completed);border-color:var(--completed);}
@@ -289,15 +307,21 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 .sticky-week-badge{display:inline-flex;align-items:center;gap:2px;font-size:.58rem;padding:1px 6px;border-radius:4px;background:var(--now-bg);color:var(--now-border);border:1px solid var(--now-border);font-weight:700;margin-right:5px;vertical-align:middle;letter-spacing:.04em;white-space:nowrap;}
 
 /* ── MODAL ───────────────────────────────────────────────────────── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .15s;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .15s;will-change:opacity;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:var(--paper);border-radius:14px;padding:26px;width:460px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(10px);transition:transform .2s;border:1px solid var(--line);}
+.modal{background:var(--paper);border-radius:14px;padding:26px;width:460px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(10px);transition:transform .2s;border:1px solid var(--line);will-change:transform,opacity;}
 .modal-overlay.open .modal{transform:translateY(0);}
 .modal h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:18px;color:var(--ink);}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
 
 /* ── DATA PANEL MODAL ────────────────────────────────────────────── */
-#data-modal .modal{width:500px;}
+#data-modal .modal{width:600px;max-width:calc(100vw - 32px);max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);padding:20px;display:flex;flex-direction:column;overflow:hidden;}
+#data-modal h3{flex-shrink:0;margin-bottom:14px;}
+.data-modal-content{min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;}
+#data-modal .data-section{padding:10px 16px;margin-bottom:12px;}
+#data-modal .data-section:last-child{margin-bottom:0;}
+#data-modal .data-section-title{margin-bottom:8px;}
+#data-modal .modal-actions{flex-shrink:0;margin-top:14px;}
 .data-section{border:1px solid var(--line);border-radius:9px;padding:16px 18px;margin-bottom:14px;}
 .data-section-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-light);margin-bottom:10px;}
 .data-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
@@ -369,6 +393,163 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 @media print{header,.form-section,.sidebar,.task-actions,.btn-print,.sort-row,#notif-banner{display:none!important;}body{background:#fff;}main{display:block;max-width:100%;padding:0;}.card{box-shadow:none;border:1px solid #ddd;}.task-item{break-inside:avoid;}}
 @media(max-width:900px){main{grid-template-columns:1fr;}header{padding:13px 18px;flex-wrap:wrap;gap:9px;}.header-right{flex-wrap:wrap;justify-content:center;gap:8px;}.week-grid{grid-template-columns:repeat(7,1fr);gap:6px;}.week-summary{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:600px){.week-grid{grid-template-columns:repeat(4,1fr);}main{padding:16px 14px;}}
+
+/* ══ OPTIMIZED UI — MOTION & POLISH ═══════════════════════════════ */
+:root{
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-in-out:cubic-bezier(.77,0,.175,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --radius-lg:14px;
+  --radius-md:9px;
+}
+html{scroll-behavior:smooth;}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,
+.theme-dot:focus-visible,.task-check:focus-visible,.sticky-check:focus-visible,.wk-goal-check:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px;border-radius:5px;
+}
+.btn,.hd-btn,.lang-opt,.view-opt,.pomo-btn-main,.pomo-btn-sec,.pomo-close-btn,.task-act-btn,
+.sticky-del,.wk-goal-del,.sticky-add-btn,.wk-goal-add-btn,.theme-dot,.date-nav button,.import-label{
+  transition:transform .15s var(--ease-out),background .2s,color .2s,border-color .2s,box-shadow .2s,opacity .2s;
+}
+.btn:active,.hd-btn:active,.task-act-btn:active,.pomo-btn-main:active,.pomo-btn-sec:active{transform:scale(.96);}
+.card{transition:box-shadow .25s var(--ease-out);}
+
+/* Toast notifications */
+#toast-root{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1200;pointer-events:none;}
+.toast{background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:10px;font-size:.84rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(12px);transition:opacity .25s var(--ease-out),transform .25s var(--ease-out);max-width:88vw;pointer-events:auto;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.hide{opacity:0;transform:translateY(8px);}
+.toast .toast-undo{background:transparent;border:1.5px solid var(--accent-warm);color:var(--accent-warm);border-radius:7px;padding:4px 12px;font-size:.78rem;font-weight:700;flex-shrink:0;transition:background .2s,color .2s;}
+.toast .toast-undo:hover{background:var(--accent-warm);color:var(--ink);}
+
+/* In-page confirm modal */
+#confirm-modal .modal{width:400px;max-width:92vw;text-align:center;}
+#confirm-modal .confirm-msg{font-size:.92rem;color:var(--ink-light);line-height:1.65;margin:2px 0 20px;word-break:break-word;}
+#confirm-modal .modal-actions{justify-content:center;}
+
+/* Task row motion */
+.task-item{transition:opacity .22s ease,transform .22s var(--ease-out),background .18s,border-left-color .18s;}
+.task-item.task-enter{animation:taskIn .28s var(--ease-out);}
+.task-item.task-removing{opacity:0;transform:translateX(22px);}
+.task-check,.sticky-check,.wk-goal-check{transition:transform .15s var(--ease-spring),background .15s,border-color .15s;}
+.task-check:hover,.sticky-check:hover,.wk-goal-check:hover{transform:scale(1.12);}
+.task-check.checked,.sticky-check.checked,.wk-goal-check.checked{animation:popCheck .3s var(--ease-spring);}
+@keyframes taskIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+@keyframes popCheck{0%{transform:scale(1);}45%{transform:scale(1.35);}100%{transform:scale(1);}}
+
+/* Week view: make today's column clearly stand out */
+.week-day.today-col{background:linear-gradient(180deg,var(--now-bg),var(--paper) 58%);}
+.week-day.today-col .wk-day-head{background:linear-gradient(90deg,var(--now-border),var(--accent-warm));}
+.week-day.today-col .wk-day-name,.week-day.today-col .wk-day-num{color:#fff;}
+.wk-today-tag{display:inline-block;margin-left:5px;font-size:.56rem;background:var(--now-border);color:#fff;border-radius:8px;padding:1px 6px;text-transform:none;letter-spacing:.02em;font-weight:700;vertical-align:middle;}
+.week-day.today-col .wk-today-tag{background:rgba(255,255,255,.3);}
+
+/* Smooth progress + modal + misc polish */
+.progress-fill,.wk-goals-fill,.storage-fill{transform-origin:left center;transform:scaleX(0);transition:transform .5s var(--ease-out);}
+.modal-overlay{transition:opacity .22s ease;}
+.modal{transition:transform .28s var(--ease-out),opacity .2s;}
+.sticky-add-btn:hover,.wk-goal-add-btn:hover{transform:scale(1.08);}
+.start-now-row{display:flex;gap:6px;align-items:center;}
+.start-now-row input{flex:1;min-width:0;}
+.start-now-btn{padding:6px 10px;border-radius:7px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink-light);font-size:.72rem;font-weight:600;white-space:nowrap;transition:border-color .18s,color .18s,background .18s;}
+.start-now-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--paper);}
+.last-export-info{font-size:.75rem;color:var(--ink-faint);margin-top:9px;}
+#notif-banner{transition:opacity .3s;}
+@media print{#toast-root,#confirm-modal{display:none!important;}}
+
+/* ══ DESIGN ENGINEERING POLISH — emil-design-eng ═══════════════════ */
+/* Typography & feel */
+html{-webkit-text-size-adjust:100%;}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
+::selection{background:var(--accent);color:#fff;}
+
+/* Header: calmer, unified control heights, accent hairline */
+header{padding:14px 28px 13px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 12px 32px -20px rgba(0,0,0,.5);}
+.header-right{gap:8px;}
+.hd-divider{height:20px;}
+.lang-btn,.view-btn{height:29px;}
+.lang-opt,.view-opt{display:inline-flex;align-items:center;justify-content:center;}
+.hd-btn{display:inline-flex;align-items:center;gap:5px;height:29px;}
+#live-clock{display:inline-flex;align-items:center;height:29px;}
+.date-nav button{width:29px;height:29px;border:1px solid rgba(255,255,255,.18);}
+#date-display{display:inline-flex;align-items:center;justify-content:center;height:29px;}
+.btn-print{display:inline-flex;align-items:center;height:29px;}
+
+/* Theme dots: tighter, with tooltips */
+.theme-dot{width:17px;height:17px;border-width:2px;transition:transform .16s var(--ease-out),border-color .16s,box-shadow .16s;}
+.theme-dot:active{transform:scale(.9);}
+.theme-dot.active{box-shadow:0 0 0 2px rgba(255,255,255,.28);}
+.theme-label{display:none;}
+@media(min-width:1100px){.theme-label{display:inline;}}
+
+/* Cards: softer depth, real hairline border */
+.card{border-radius:var(--radius-lg);border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.04),0 14px 34px -22px var(--shadow);}
+.card-header{padding:15px 22px 12px;}
+.card-title{letter-spacing:.01em;}
+
+/* Form: aligned control heights, roomier grid */
+.form-grid{gap:14px;}
+input[type="text"],input[type="time"],input[type="number"],select,textarea{min-height:38px;}
+.priority-btn{min-height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;}
+.start-now-btn{min-height:34px;padding:0 12px;}
+.btn{min-height:36px;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.card-header .btn{min-height:30px;padding:4px 11px;}
+
+/* Press feedback on every pressable */
+.priority-btn:active,.week-nav-btn:active,.date-nav button:active,.view-opt:active,.lang-opt:active{transform:scale(.94);}
+
+/* Task rows: clearer hierarchy */
+.task-item{padding:14px 22px;gap:13px;}
+.task-time{min-width:88px;}
+.task-name{font-size:.95rem;font-weight:600;line-height:1.45;}
+.task-note{font-size:.79rem;line-height:1.55;}
+.task-check{width:20px;height:20px;margin-top:2px;}
+.badge{letter-spacing:.03em;}
+
+/* Stats: accent numerals */
+.stat-item{padding:13px 15px;border-radius:var(--radius-md);}
+.stat-num{font-size:1.85rem;color:var(--accent);}
+.stat-label{letter-spacing:.09em;}
+
+/* Modal: scale-in from just-below, blur masks the backdrop */
+.modal-overlay{backdrop-filter:blur(2px);}
+@supports not (backdrop-filter:blur(2px)){.modal-overlay{backdrop-filter:none;}}
+.modal{transform:translateY(14px) scale(.98);opacity:0;transition:opacity .18s ease,transform .28s var(--ease-out);}
+.modal-overlay.open .modal{opacity:1;transform:none;}
+
+/* Toast: enter ease-out, exit faster (asymmetric timing) */
+.toast{transition:opacity .28s var(--ease-out),transform .28s var(--ease-out);}
+.toast.hide{transition:opacity .16s ease,transform .16s ease;}
+
+/* Task entrance: short stagger when a whole list renders */
+.stagger .task-item.task-enter{animation:taskIn .3s var(--ease-out) backwards;animation-delay:calc(var(--i,0)*35ms);}
+
+/* Hover-only scale feedback: off on touch, row actions always visible there */
+.theme-dot:hover,.task-check:hover,.sticky-check:hover,.wk-goal-check:hover,.sticky-add-btn:hover,.wk-goal-add-btn:hover{transform:none;}
+@media(hover:hover) and (pointer:fine){
+  .theme-dot:hover{transform:scale(1.16);}
+  .task-check:hover,.sticky-check:hover,.wk-goal-check:hover{transform:scale(1.1);}
+  .sticky-add-btn:hover,.wk-goal-add-btn:hover{transform:scale(1.06);}
+  .task-item:hover{background:var(--bg);}
+  .week-day:hover{border-color:var(--accent);box-shadow:0 3px 14px var(--shadow);}
+  .week-day:hover .wk-add-hint{opacity:1;}
+}
+@media(hover:none){
+  .task-actions{opacity:1;}
+  .sticky-del{opacity:1;}
+  .wk-goal-del{opacity:1;}
+}
+@media (max-width:560px){
+  .sticky-input-row{flex-wrap:wrap;}
+  .sticky-input-row input[type="text"]{min-width:100%;}
+}
+
+/* Reduced motion: keep color/opacity cues, drop movement */
+@media (prefers-reduced-motion: reduce){
+  .now-badge,.t-dot.is-now-dot,.task-act-btn.pomodoro.pomo-active,.theme-dot,.sticky-add-btn,.wk-goal-add-btn,.task-check,.sticky-check,.wk-goal-check,.task-item.task-enter{animation:none!important;}
+  .task-item.task-enter,.task-item.task-removing,.modal,.toast,.progress-fill,.storage-fill,.wk-goals-fill,.card,.week-day{transition:none!important;}
+  html{scroll-behavior:auto!important;}
+}
 </style>
 </head>
 <body>
@@ -391,12 +572,13 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
     <!-- THEME -->
     <div class="theme-picker">
       <span class="theme-label" data-i18n="theme"></span>
-      <div class="theme-dot active" data-t="default" onclick="setTheme('default',this)"></div>
-      <div class="theme-dot" data-t="ocean"    onclick="setTheme('ocean',this)"></div>
-      <div class="theme-dot" data-t="forest"   onclick="setTheme('forest',this)"></div>
-      <div class="theme-dot" data-t="midnight" onclick="setTheme('midnight',this)"></div>
-      <div class="theme-dot" data-t="rose"     onclick="setTheme('rose',this)"></div>
-      <div class="theme-dot" data-t="sand"     onclick="setTheme('sand',this)"></div>
+      <div class="theme-dot active" data-t="default" title="默认" onclick="setTheme('default',this)"></div>
+      <div class="theme-dot" data-t="ocean"    title="海洋" onclick="setTheme('ocean',this)"></div>
+      <div class="theme-dot" data-t="forest"   title="森林" onclick="setTheme('forest',this)"></div>
+      <div class="theme-dot" data-t="midnight" title="午夜" onclick="setTheme('midnight',this)"></div>
+      <div class="theme-dot" data-t="rose"     title="玫瑰" onclick="setTheme('rose',this)"></div>
+      <div class="theme-dot" data-t="sand"     title="沙丘" onclick="setTheme('sand',this)"></div>
+      <div class="theme-dot" data-t="mint"     title="薄荷" onclick="setTheme('mint',this)"></div>
     </div>
     <div class="hd-divider"></div>
     <!-- VIEW TOGGLE -->
@@ -413,16 +595,21 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
     <div class="hd-divider"></div>
     <!-- DATA -->
     <button class="hd-btn" onclick="openDataModal()" data-i18n="dataBtn">💾 数据</button>
+    <!-- DESKTOP WALLPAPER -->
+    <button class="hd-btn" id="wallpaper-btn" onclick="openWallpaper()" title="">
+      <span class="sync-dot" id="sync-dot"></span>
+      <span data-i18n="desktopBtn">🖼 桌面壁纸</span>
+    </button>
     <!-- CLOCK -->
     <div id="live-clock">--:--:--</div>
     <!-- DATE NAV -->
     <div class="date-nav" id="day-date-nav">
-      <button onclick="changeDay(-1)">‹</button>
-      <div id="date-display" onclick="openDatePicker()">Loading…</div>
-      <button onclick="changeDay(1)">›</button>
+      <button onclick="changeDay(-1)" data-i18n-aria="prevDay" aria-label="前一天">‹</button>
+      <div id="date-display" onclick="openDatePicker()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDatePicker()}" role="button" tabindex="0" data-i18n-aria="pickDate" aria-label="选择日期">Loading…</div>
+      <button onclick="changeDay(1)" data-i18n-aria="nextDay" aria-label="后一天">›</button>
       <input type="date" id="real-date-input" onchange="onDatePick(this.value)">
     </div>
-    <button class="btn-print" onclick="window.print()" data-i18n="print">🖨</button>
+    <button class="btn-print" onclick="window.print()" data-i18n="print" data-i18n-aria="printAria" aria-label="打印计划">🖨</button>
   </div>
 </header>
 
@@ -440,7 +627,13 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
         </div>
         <div class="card-body" id="form-body">
           <div class="form-grid">
-            <div><label data-i18n="startTime"></label><input type="time" id="t-start" oninput="onFormStartChange()"></div>
+            <div>
+              <label data-i18n="startTime"></label>
+              <div class="start-now-row">
+                <input type="time" id="t-start" oninput="onFormStartChange()">
+                <button type="button" class="start-now-btn" onclick="setStartNow()" data-i18n="nowBtn">现在</button>
+              </div>
+            </div>
             <div><label data-i18n="endTime"></label><input type="time" id="t-end" oninput="onFormEndChange()"></div>
             <div>
               <label data-i18n="duration"></label>
@@ -485,12 +678,15 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
           <span class="card-title" data-i18n="todayPlan"></span>
           <div class="sort-row">
             <label data-i18n="sortBy"></label>
-            <select onchange="sortTasks(this.value)">
+            <select id="sort-select" onchange="sortTasks(this.value)">
               <option value="time"     data-i18n-opt="sortTime"></option>
               <option value="priority" data-i18n-opt="sortPri"></option>
               <option value="added"    data-i18n-opt="sortAdded"></option>
             </select>
           </div>
+        </div>
+        <div class="plan-toolbar">
+          <button type="button" id="copy-next-day-btn" class="btn btn-secondary" onclick="copyPlansToNextDay()" data-i18n="copyNextDay"></button>
         </div>
         <div id="task-list"></div>
         <div class="progress-area" id="progress-area" style="display:none">
@@ -498,7 +694,7 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
             <span id="progress-text"></span>
             <span id="progress-pct">0%</span>
           </div>
-          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="transform:scaleX(0)"></div></div>
         </div>
       </div>
     </div>
@@ -529,6 +725,13 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
         <div class="card-body" style="padding:14px 18px;">
           <div class="sticky-input-row">
             <input type="text" id="sticky-input" onkeydown="if(event.key==='Enter') addSticky()">
+            <div class="sticky-scope">
+              <span class="sticky-scope-label" data-i18n="stickyScopeLabel"></span>
+              <div class="sticky-scope-btns" id="sticky-scope-btns">
+                <button type="button" class="sticky-scope-btn" data-scope="today" data-i18n="stickyScopeToday" onclick="setStickyScope('today')"></button>
+                <button type="button" class="sticky-scope-btn" data-scope="all" data-i18n="stickyScopeAll" onclick="setStickyScope('all')"></button>
+              </div>
+            </div>
             <button class="sticky-add-btn" onclick="addSticky()">+</button>
           </div>
           <div class="sticky-list" id="sticky-list"></div>
@@ -569,7 +772,7 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
         </div>
         <div class="wk-goal-list" id="wk-goal-list"></div>
         <div class="wk-goals-progress" id="wk-goals-progress" style="display:none;">
-          <div class="wk-goals-bar"><div class="wk-goals-fill" id="wk-goals-fill" style="width:0%"></div></div>
+          <div class="wk-goals-bar"><div class="wk-goals-fill" id="wk-goals-fill" style="transform:scaleX(0)"></div></div>
           <div class="wk-goals-bar-label">
             <span id="wk-goals-bar-text"></span>
             <span id="wk-goals-bar-pct"></span>
@@ -584,9 +787,9 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 </main>
 
 <!-- EDIT MODAL -->
-<div class="modal-overlay" id="modal">
+<div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="edit-title">
   <div class="modal">
-    <h3 data-i18n="editPlan"></h3>
+    <h3 id="edit-title" data-i18n="editPlan"></h3>
     <div class="form-grid">
       <div><label data-i18n="startTime"></label><input type="time" id="e-start"></div>
       <div><label data-i18n="endTime"></label><input type="time" id="e-end"></div>
@@ -622,10 +825,10 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 </div>
 
 <!-- DATA MODAL -->
-<div class="modal-overlay" id="data-modal">
-  <div class="modal" style="width:520px;max-width:95vw;">
-    <h3 data-i18n="dataTitle"></h3>
-
+<div class="modal-overlay" id="data-modal" role="dialog" aria-modal="true" aria-labelledby="data-title">
+  <div class="modal">
+    <h3 id="data-title" data-i18n="dataTitle"></h3>
+    <div class="data-modal-content">
     <!-- EXPORT -->
     <div class="data-section">
       <div class="data-section-title" data-i18n="exportTitle"></div>
@@ -633,6 +836,17 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
         <p data-i18n="exportDesc"></p>
         <button class="btn btn-primary" onclick="exportData()" data-i18n="exportBtn"></button>
       </div>
+      <p class="last-export-info" id="last-export-info"></p>
+    </div>
+
+    <!-- WALLPAPER SYNC -->
+    <div class="data-section">
+      <div class="data-section-title" data-i18n="wallpaperSyncTitle"></div>
+      <div class="data-row">
+        <p data-i18n="wallpaperSyncDesc"></p>
+        <button class="btn btn-secondary" onclick="openWallpaper()" data-i18n="wallpaperOpenBtn"></button>
+      </div>
+      <p class="last-export-info" id="sync-status-line"></p>
     </div>
 
     <!-- IMPORT -->
@@ -655,7 +869,7 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
       <div class="data-section-title" data-i18n="storageTitle"></div>
       <div class="prune-info" id="prune-info"></div>
       <div class="storage-bar-wrap">
-        <div class="storage-bar"><div class="storage-fill" id="storage-fill" style="width:0%"></div></div>
+        <div class="storage-bar"><div class="storage-fill" id="storage-fill" style="transform:scaleX(0)"></div></div>
         <div class="storage-info-row">
           <span id="storage-used"></span>
           <span id="storage-pct"></span>
@@ -667,6 +881,7 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
       </div>
     </div>
 
+    </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeDataModal()" data-i18n="close"></button>
     </div>
@@ -674,11 +889,11 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
 </div>
 
 <!-- POMODORO MODAL -->
-<div class="modal-overlay" id="pomodoro-modal">
+<div class="modal-overlay" id="pomodoro-modal" role="dialog" aria-modal="true" aria-labelledby="pomo-title">
   <div class="modal" style="width:100vw;height:100vh;max-width:100vw;text-align:center;padding:80px 32px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:0;">
     <div class="pomo-header">
       <h3 id="pomo-title"></h3>
-      <button class="pomo-close-btn" onclick="stopPomodoro()" title="">✕</button>
+      <button class="pomo-close-btn" id="pomo-close-btn" onclick="stopPomodoro()" title="" aria-label="关闭">✕</button>
     </div>
     <div class="pomo-task-name" id="pomo-task-name"></div>
     <!-- Done note (if task is already completed) -->
@@ -715,6 +930,21 @@ input[type="number"]:disabled{opacity:.38;cursor:not-allowed;}
   </div>
 </div>
 
+<!-- TOASTS -->
+<div id="toast-root" aria-live="polite"></div>
+
+<!-- IN-PAGE CONFIRM -->
+<div class="modal-overlay" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal">
+    <h3 id="confirm-title" data-i18n="confirmTitle"></h3>
+    <div class="confirm-msg" id="confirm-msg"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="confirm-cancel-btn" onclick="closeConfirm()" data-i18n="confirmCancel"></button>
+      <button class="btn btn-danger" id="confirm-ok-btn" onclick="confirmOk()" data-i18n="confirmDelete"></button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // i18n DICTIONARY
@@ -725,6 +955,16 @@ const I18N = {
     theme:'主题', print:'🖨',
     viewDay:'日', viewWeek:'周',
     dataBtn:'💾 数据',
+    desktopBtn:'🖼 桌面壁纸',
+    wallpaperTip:'已启动壁纸引擎，今日计划将显示在桌面上。',
+    wallpaperNoSync:'壁纸同步服务未运行，壁纸将显示上次同步的数据。请通过「每日计划」启动器打开本站。',
+    wallpaperTitle:'在壁纸引擎中显示今日计划',
+    wallpaperSyncTitle:'壁纸同步',
+    wallpaperSyncDesc:'壁纸数据通过本机同步服务自动更新。请用「每日计划」启动器打开本站，同步服务随开机自动运行。',
+    wallpaperOpenBtn:'打开壁纸引擎',
+    syncLineOn:'壁纸同步：已连接，数据实时更新',
+    syncLineOff:'壁纸同步：未连接（请在壁纸引擎中确认同步服务已启动）',
+    syncAdopted:'已同步壁纸上的最新改动',
     addPlan:'添加计划', collapse:'— 收起', expand:'+ 展开',
     startTime:'开始时间', endTime:'结束时间（可选）',
     duration:'持续时间（可选，分钟）', durationPh:'例：90',
@@ -739,6 +979,9 @@ const I18N = {
     catFun:'🎮 娱乐', catOther:'📌 其他',
     priHigh:'高', priMid:'中', priLow:'低',
     todayPlan:'今日计划',
+    copyNextDay:'复制到明天', copyEmpty:'当日没有可复制的计划',
+    confirmCopyNextDay:'{date} 已有 {existing} 条计划。将追加当日的 {count} 条计划，副本均为未完成，是否继续？',
+    confirmCopy:'追加计划', toastCopied:'已复制 {count} 条计划到 {date}',
     sortBy:'排序：', sortTime:'按时间', sortPri:'按优先级', sortAdded:'添加顺序',
     allDay:'全天', priHighLabel:'高优先', priMidLabel:'中优先', priLowLabel:'低优先',
     nowBadge:'进行中', editTitle:'编辑', delTitle:'删除',
@@ -748,8 +991,18 @@ const I18N = {
     statTotal:'总计划', statDone:'已完成', statPending:'待完成', statHigh:'重要事项',
     timeline:'时间轴', timelineEmpty:'暂无设定时间的计划', nowLabel:'▶ 现在',
     sticky:'便签', stickyPh:'记一件事…',
+    stickyScopeLabel:'显示范围', stickyScopeToday:'当日', stickyScopeAll:'全部',
     stickyEmpty:'暂无便签，在上方输入添加',
     stickyDelTitle:'删除', stickyDone:'{done} / {total} 完成',
+    // quick actions & a11y
+    nowBtn:'现在', prevDay:'前一天', nextDay:'后一天', pickDate:'选择日期', printAria:'打印计划',
+    themeDefault:'纸感', themeOcean:'海洋', themeForest:'森林', themeMidnight:'午夜', themeRose:'玫瑰', themeSand:'沙色',
+    // toast & confirm
+    confirmTitle:'请确认', confirmCancel:'取消', confirmDelete:'删除', confirmSwitch:'切换',
+    confirmDeleteTask:'确定删除计划「{name}」吗？', confirmDeleteSticky:'确定删除这条便签吗？', confirmDeleteGoal:'确定删除这条周目标吗？',
+    toastAdded:'已添加计划', toastDeleted:'已删除', toastRestored:'已恢复', toastUndo:'撤销',
+    toastSaved:'已保存', toastExported:'备份已导出',
+    lastExportInfo:'上次导出：{time}', lastExportNever:'尚未导出过',
     dailyNotes:'今日笔记', notesPh:'记录想法、灵感、总结…', saved:'已保存 ✓',
     editPlan:'编辑计划', cancel:'取消', save:'保存', close:'关闭',
     weekdays:['周日','周一','周二','周三','周四','周五','周六'],
@@ -809,6 +1062,16 @@ const I18N = {
     theme:'Theme', print:'🖨',
     viewDay:'Day', viewWeek:'Week',
     dataBtn:'💾 Data',
+    desktopBtn:'🖼 Desktop',
+    wallpaperTip:'Wallpaper Engine launched — today\'s plans are now on your desktop.',
+    wallpaperNoSync:'The sync service is not running — the wallpaper will show the last synced data. Open this site via the "Daily Planner" launcher.',
+    wallpaperTitle:'Show today\'s plans in Wallpaper Engine',
+    wallpaperSyncTitle:'Wallpaper Sync',
+    wallpaperSyncDesc:'Wallpaper data is auto-synced through a local service. Open this site with the "Daily Planner" launcher; the service also starts at login.',
+    wallpaperOpenBtn:'Open Wallpaper Engine',
+    syncLineOn:'Wallpaper sync: connected — data updates in real time',
+    syncLineOff:'Wallpaper sync: offline (start the sync service to refresh)',
+    syncAdopted:'Latest wallpaper changes synced',
     addPlan:'Add Plan', collapse:'— Collapse', expand:'+ Expand',
     startTime:'Start Time', endTime:'End Time (optional)',
     duration:'Duration (optional, min)', durationPh:'e.g. 90',
@@ -823,6 +1086,9 @@ const I18N = {
     catFun:'🎮 Fun', catOther:'📌 Other',
     priHigh:'High', priMid:'Medium', priLow:'Low',
     todayPlan:"Today's Plans",
+    copyNextDay:'Copy to next day', copyEmpty:'There are no plans to copy',
+    confirmCopyNextDay:'{date} already has {existing} plans. Append {count} plans from this day with completion reset?',
+    confirmCopy:'Append plans', toastCopied:'Copied {count} plans to {date}',
     sortBy:'Sort:', sortTime:'By Time', sortPri:'By Priority', sortAdded:'By Added',
     allDay:'All Day', priHighLabel:'High', priMidLabel:'Med', priLowLabel:'Low',
     nowBadge:'Now', editTitle:'Edit', delTitle:'Delete',
@@ -832,8 +1098,18 @@ const I18N = {
     statTotal:'Total', statDone:'Done', statPending:'Pending', statHigh:'Important',
     timeline:'Timeline', timelineEmpty:'No timed plans yet', nowLabel:'▶ Now',
     sticky:'Sticky Notes', stickyPh:'Jot something down…',
+    stickyScopeLabel:'Show', stickyScopeToday:'Today', stickyScopeAll:'All',
     stickyEmpty:'No stickies yet. Type above to add one.',
     stickyDelTitle:'Delete', stickyDone:'{done} / {total} done',
+    // quick actions & a11y
+    nowBtn:'Now', prevDay:'Previous day', nextDay:'Next day', pickDate:'Pick a date', printAria:'Print plan',
+    themeDefault:'Paper', themeOcean:'Ocean', themeForest:'Forest', themeMidnight:'Midnight', themeRose:'Rose', themeSand:'Sand',
+    // toast & confirm
+    confirmTitle:'Please Confirm', confirmCancel:'Cancel', confirmDelete:'Delete', confirmSwitch:'Switch',
+    confirmDeleteTask:'Delete the plan "{name}"?', confirmDeleteSticky:'Delete this sticky note?', confirmDeleteGoal:'Delete this weekly goal?',
+    toastAdded:'Plan added', toastDeleted:'Deleted', toastRestored:'Restored', toastUndo:'Undo',
+    toastSaved:'Saved', toastExported:'Backup exported',
+    lastExportInfo:'Last export: {time}', lastExportNever:'Not exported yet',
     dailyNotes:'Daily Notes', notesPh:'Ideas, reflections, summary…', saved:'Saved ✓',
     editPlan:'Edit Plan', cancel:'Cancel', save:'Save', close:'Close',
     weekdays:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
@@ -900,15 +1176,93 @@ let editingId = null;
 let sortMode = 'time';
 let formVisible = true;
 let stickies = [];
+let stickyScope = 'all';     // 'today' (only on its day) | 'all' (always visible)
 let currentView = 'day';     // 'day' | 'week'
 let weekOffset = 0;          // weeks offset from current
 let notifiedTasks = new Set(); // ids already notified today
+let _taskNodes = new Map();   // id string -> task row element (for incremental updates)
+let _lastFocusEl = null;      // element whose focus we restore after a modal closes
 
 function t(key, vars) {
   let s = I18N[lang][key] || key;
   if (vars) Object.keys(vars).forEach(k => s = s.replace('{'+k+'}', vars[k]));
   return s;
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// TOASTS
+// ═══════════════════════════════════════════════════════════════════
+function showToast(msg, opts) {
+  opts = opts || {};
+  const root = document.getElementById('toast-root');
+  if (!root) return;
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  if (opts.undo) {
+    const btn = document.createElement('button');
+    btn.className = 'toast-undo';
+    btn.textContent = opts.undoLabel || t('toastUndo');
+    btn.onclick = () => { clearTimeout(el._timer); hideToast(el); opts.undo(); };
+    el.appendChild(btn);
+  }
+  root.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  el._timer = setTimeout(() => hideToast(el), opts.duration || 3000);
+}
+function hideToast(el) {
+  if (el._hiding) return;
+  el._hiding = true;
+  el.classList.remove('show');
+  el.classList.add('hide');
+  setTimeout(() => el.remove(), 300);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// IN-PAGE CONFIRM (replaces native confirm())
+// ═══════════════════════════════════════════════════════════════════
+let _confirmCallback = null;
+function openConfirm(message, onOk, okLabel) {
+  rememberFocus();
+  document.getElementById('confirm-msg').textContent = message;
+  document.getElementById('confirm-ok-btn').textContent = okLabel || t('confirmDelete');
+  _confirmCallback = onOk;
+  document.getElementById('confirm-modal').classList.add('open');
+  document.getElementById('confirm-cancel-btn').focus();
+}
+function closeConfirm() {
+  document.getElementById('confirm-modal').classList.remove('open');
+  _confirmCallback = null;
+  restoreFocus();
+}
+function confirmOk() {
+  const cb = _confirmCallback;
+  closeConfirm();
+  if (cb) cb();
+}
+document.getElementById('confirm-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeConfirm();
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// FOCUS MANAGEMENT
+// ═══════════════════════════════════════════════════════════════════
+function rememberFocus() {
+  _lastFocusEl = document.activeElement && document.activeElement.focus ? document.activeElement : null;
+}
+function restoreFocus() {
+  if (_lastFocusEl && _lastFocusEl.focus) { try { _lastFocusEl.focus(); } catch(e) {} }
+  _lastFocusEl = null;
+}
+
+// Esc closes whichever modal is open (topmost first)
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('confirm-modal').classList.contains('open')) { closeConfirm(); return; }
+  if (document.getElementById('modal').classList.contains('open')) { closeModal(); return; }
+  if (document.getElementById('data-modal').classList.contains('open')) { closeDataModal(); return; }
+  if (document.getElementById('pomodoro-modal').classList.contains('open')) { stopPomodoro(); }
+});
 
 // ═══════════════════════════════════════════════════════════════════
 // LANGUAGE
@@ -926,6 +1280,7 @@ function setLang(l) {
   renderAll();
   if (currentView==='week') { renderWeek(); renderWeekGoals(); }
   updateNotifBanner();
+  pushSync();
 }
 function applyLang() {
   document.getElementById('site-title').textContent  = t('siteTitle');
@@ -939,6 +1294,10 @@ function applyLang() {
     const k = el.getAttribute('data-i18n-opt');
     if (I18N[lang][k] !== undefined) el.textContent = t(k);
   });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+    const k = el.getAttribute('data-i18n-aria');
+    if (I18N[lang][k] !== undefined) el.setAttribute('aria-label', t(k));
+  });
   document.getElementById('t-name').placeholder     = t('eventPh');
   document.getElementById('t-note').placeholder     = t('notePh');
   document.getElementById('t-duration').placeholder = t('durationPh');
@@ -949,8 +1308,10 @@ function applyLang() {
   ['default','ocean','forest','midnight','rose','sand'].forEach((n,i) => {
     const dot = document.querySelector(`.theme-dot[data-t="${n}"]`);
     const keys=['themeDefault','themeOcean','themeForest','themeMidnight','themeRose','themeSand'];
-    if (dot) dot.title = t(keys[i]);
+    if (dot) { dot.title = t(keys[i]); dot.setAttribute('aria-label', t(keys[i])); }
   });
+  const pomoClose = document.getElementById('pomo-close-btn');
+  if (pomoClose) { pomoClose.title = t('close'); pomoClose.setAttribute('aria-label', t('close')); }
   const pBtns = document.querySelectorAll('#form-body .priority-btn');
   if (pBtns[0]) pBtns[0].textContent = t('high');
   if (pBtns[1]) pBtns[1].textContent = t('mid');
@@ -963,6 +1324,7 @@ function applyLang() {
   const pAll = document.getElementById('prune-all-btn');
   if (p60) p60.textContent = t('prune60Btn');
   if (pAll) pAll.textContent = t('pruneAllBtn');
+  setStickyScope(stickyScope);
 }
 function loadLang() {
   lang = localStorage.getItem('dp_lang')||'zh';
@@ -1024,7 +1386,11 @@ function updateClock() {
   if(el.textContent!==s) el.textContent=s;
 }
 setInterval(updateClock,1000); updateClock();
-setInterval(()=>{ highlightNow(); renderTimeline(); checkNotifications(); }, 30000);
+setInterval(()=>{
+  const dayTasks = tasks[currentDate]||[];
+  if (currentView==='day' && dayTasks.length>0) { highlightNow(); renderTimeline(); }
+  checkNotifications();
+}, 30000);
 
 function highlightNow() {
   const list = getSortedTasks();
@@ -1051,6 +1417,7 @@ function setTheme(name, dotEl) {
   document.querySelectorAll('.theme-dot').forEach(d=>d.classList.remove('active'));
   dotEl.classList.add('active');
   localStorage.setItem('dp_theme', name);
+  pushSync();
 }
 function loadTheme() {
   const saved = localStorage.getItem('dp_theme')||'default';
@@ -1091,7 +1458,7 @@ function updateNotifBanner() {
   }
 }
 function requestNotifPermission() {
-  if (!('Notification' in window)) { alert(t('notifNoSupport')); return; }
+  if (!('Notification' in window)) { showToast(t('notifNoSupport')); return; }
   Notification.requestPermission().then(p => {
     updateNotifBanner();
     if (p==='granted') checkNotifications();
@@ -1132,26 +1499,183 @@ setTimeout(checkNotifications, 2000);
 // STORAGE  (localStorage with ~5MB limit per domain)
 // ═══════════════════════════════════════════════════════════════════
 let _saveTimer = null;
+const PERSISTENCE_DB = 'daily-planner-persistence';
+const PERSISTENCE_STORE = 'planner-state';
+const PERSISTENCE_KEY = 'current';
+
+function parseStoredJSON(value, fallback) {
+  try { return JSON.parse(value || ''); } catch (e) { return fallback; }
+}
+function readLegacyCache(key, fallback) {
+  try { return parseStoredJSON(localStorage.getItem(key), fallback); } catch (e) { return fallback; }
+}
+function writeLegacyCache() {
+  try {
+    localStorage.setItem('dp_tasks', JSON.stringify(tasks));
+    localStorage.setItem('dp_notes', JSON.stringify(notes));
+    localStorage.setItem('dp_stickies', JSON.stringify(stickies));
+  } catch (e) {
+    // IndexedDB remains the durable storage when browser local storage is unavailable.
+  }
+}
+function openPersistenceDB() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) return reject(new Error('IndexedDB is not supported'));
+    const request = indexedDB.open(PERSISTENCE_DB, 1);
+    request.onupgradeneeded = () => request.result.createObjectStore(PERSISTENCE_STORE);
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+async function persistData() {
+  try {
+    const db = await openPersistenceDB();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction(PERSISTENCE_STORE, 'readwrite');
+      tx.objectStore(PERSISTENCE_STORE).put({ tasks, notes, stickies, updatedAt: Date.now() }, PERSISTENCE_KEY);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
+    });
+    db.close();
+  } catch (e) {
+    // The legacy cache is retained as a fallback for browsers without IndexedDB.
+  }
+}
+async function restorePersistedData() {
+  try {
+    const db = await openPersistenceDB();
+    const saved = await new Promise((resolve, reject) => {
+      const tx = db.transaction(PERSISTENCE_STORE, 'readonly');
+      const request = tx.objectStore(PERSISTENCE_STORE).get(PERSISTENCE_KEY);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    db.close();
+    if (!saved || typeof saved !== 'object') return false;
+    tasks = saved.tasks && typeof saved.tasks === 'object' ? saved.tasks : {};
+    notes = saved.notes && typeof saved.notes === 'object' ? saved.notes : {};
+    stickies = Array.isArray(saved.stickies) ? saved.stickies : [];
+    writeLegacyCache();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 function save(immediate) {
   if (immediate) {
     if(_saveTimer){clearTimeout(_saveTimer);_saveTimer=null;}
-    localStorage.setItem('dp_tasks', JSON.stringify(tasks));
-    localStorage.setItem('dp_notes', JSON.stringify(notes));
+    writeLegacyCache();
+    persistData();
+    pushSync();
     return;
   }
   if (_saveTimer) return; // already queued
   _saveTimer = setTimeout(()=>{
     _saveTimer = null;
-    localStorage.setItem('dp_tasks', JSON.stringify(tasks));
-    localStorage.setItem('dp_notes', JSON.stringify(notes));
+    writeLegacyCache();
+    persistData();
+    pushSync();
   }, 300);
 }
 function load() {
-  tasks = JSON.parse(localStorage.getItem('dp_tasks')||'{}');
-  notes = JSON.parse(localStorage.getItem('dp_notes')||'{}');
+  tasks = readLegacyCache('dp_tasks', {});
+  notes = readLegacyCache('dp_notes', {});
 }
-function saveStickies() { _wkGoalsHash=''; localStorage.setItem('dp_stickies', JSON.stringify(stickies)); }
-function loadStickies() { stickies = JSON.parse(localStorage.getItem('dp_stickies')||'[]'); }
+function saveStickies() { _wkGoalsHash=''; writeLegacyCache(); persistData(); pushSync(); }
+function loadStickies() { stickies = readLegacyCache('dp_stickies', []); if(!Array.isArray(stickies)) stickies=[]; }
+
+// ═══════════════════════════════════════════════════════════════════
+// WALLPAPER SYNC  (local sync service at 127.0.0.1:17931)
+// ═══════════════════════════════════════════════════════════════════
+const SYNC_URL='http://127.0.0.1:17931/api/data';
+let syncOnline=false;
+let syncLastWrite=0;
+let syncAdoptAt=0;
+let syncPushTimer=null;
+
+function syncPayload(){
+  return {
+    version:2,
+    tasks: tasks,
+    notes: notes,
+    stickies: stickies,
+    lang: lang,
+    theme: localStorage.getItem('dp_theme')||'default',
+    view: currentView||'day',
+    updatedAt: Date.now()
+  };
+}
+function updateSyncUI(){
+  const dot=document.getElementById('sync-dot');
+  if(dot) dot.className='sync-dot '+(syncOnline?'on':'off');
+  const btn=document.getElementById('wallpaper-btn');
+  if(btn) btn.title=t('wallpaperTitle');
+  const line=document.getElementById('sync-status-line');
+  if(line) line.textContent=syncOnline?t('syncLineOn'):t('syncLineOff');
+}
+function pushSyncNow(){
+  if(syncPushTimer){ clearTimeout(syncPushTimer); syncPushTimer=null; }
+  fetch(SYNC_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(syncPayload()),
+    cache:'no-store'
+  }).then(r=>{
+    if(!r.ok) throw 0;
+    return r.json();
+  }).then(j=>{
+    syncLastWrite=j.updatedAt||Date.now();
+    syncOnline=true;
+    updateSyncUI();
+  }).catch(()=>{
+    syncOnline=false;
+    updateSyncUI();
+  });
+}
+function pushSync(){
+  if(syncPushTimer) return; // already queued
+  syncPushTimer=setTimeout(()=>{ syncPushTimer=null; pushSyncNow(); },600);
+}
+async function pollSync(){
+  try{
+    const r=await fetch(SYNC_URL,{cache:'no-store'});
+    if(!r.ok) throw 0;
+    const d=await r.json();
+    if(!d||!d.tasks) throw 0;
+    if(!syncOnline){ syncOnline=true; updateSyncUI(); }
+    const newer=d.updatedAt&&d.updatedAt!==syncLastWrite&&d.updatedAt>syncAdoptAt;
+    if(!newer) return false;
+    syncAdoptAt=d.updatedAt;
+    let changed=false;
+    if(JSON.stringify(d.tasks)!==JSON.stringify(tasks)){ tasks=d.tasks; changed=true; }
+    if(d.notes&&JSON.stringify(d.notes)!==JSON.stringify(notes)){ notes=d.notes; changed=true; }
+    if(d.stickies&&JSON.stringify(d.stickies)!==JSON.stringify(stickies)){ stickies=d.stickies; changed=true; }
+    const langChanged = !!(d.lang&&d.lang!==lang);
+    if(langChanged){ lang=d.lang; localStorage.setItem('dp_lang',lang); changed=true; }
+    if(d.theme){
+      const dot=document.querySelector('.theme-dot[data-t="'+d.theme+'"]');
+      if(dot){ setTheme(d.theme,dot); } else { localStorage.setItem('dp_theme',d.theme); }
+      changed=true;
+    }
+    if(changed){
+      invalidateSortedCache();
+      save();
+      saveStickies();
+      if(langChanged){ applyLang(); }
+      renderAll();
+      renderStickies();
+      updateStorageInfo();
+      if(currentView==='week') renderWeek();
+      showToast(t('syncAdopted'));
+    }
+    return true;
+  }catch(e){
+    if(syncOnline){ syncOnline=false; updateSyncUI(); }
+    return false;
+  }
+}
+// Start synchronization after browser persistence has finished restoring in initializePlanner.
 
 // Auto-prune on load: silently remove task keys (not note keys) older than 180 days
 function autoPrune() {
@@ -1165,15 +1689,17 @@ function autoPrune() {
 // ── Manual prune ────────────────────────────────────────────────
 function pruneOldData(days) {
   const msg = days===0 ? t('pruneConfirmAll') : t('pruneConfirm60');
-  if (!confirm(msg)) return;
-  const cutoff = days===0 ? todayStr() : addDays(todayStr(), -days);
-  let n = 0;
-  Object.keys(tasks).forEach(d => { if (d<cutoff) { delete tasks[d]; n++; } });
-  Object.keys(notes).forEach(d => { if (d<cutoff) { delete notes[d]; } });
-  save();
-  renderAll();
-  updateStorageInfo();
-  if (days>0) alert(t('pruneDone',{n}));
+  openConfirm(msg, function(){
+    const cutoff = days===0 ? todayStr() : addDays(todayStr(), -days);
+    let n = 0;
+    Object.keys(tasks).forEach(d => { if (d<cutoff) { delete tasks[d]; n++; } });
+    Object.keys(notes).forEach(d => { if (d<cutoff) { delete notes[d]; } });
+    save();
+    renderAll();
+    if(currentView==='week') renderWeek();
+    updateStorageInfo();
+    showToast(t('pruneDone',{n}));
+  });
 }
 
 // ── Storage usage ────────────────────────────────────────────────
@@ -1192,7 +1718,7 @@ function updateStorageInfo() {
   document.getElementById('storage-used').textContent = t('storageUsed',{kb}) + ' ' + t('storageOf');
   document.getElementById('storage-pct').textContent = pct + '%';
   const fill = document.getElementById('storage-fill');
-  fill.style.width = pct+'%';
+  fill.style.transform = 'scaleX('+(pct/100)+')';
   fill.className = 'storage-fill ' + (pct>80?'danger':pct>50?'warn':'ok');
 
   // prune info
@@ -1220,6 +1746,18 @@ function exportData() {
   a.download = `daily-planner-${dateTag}.json`;
   a.click();
   URL.revokeObjectURL(url);
+  localStorage.setItem('dp_last_export', new Date().toISOString());
+  const li=document.getElementById('last-export-info');
+  if(li) li.textContent = formatLastExport();
+  showToast(t('toastExported'));
+}
+function formatLastExport() {
+  const lastRaw = localStorage.getItem('dp_last_export');
+  if (!lastRaw) return t('lastExportNever');
+  const d = new Date(lastRaw);
+  if (isNaN(d.getTime())) return t('lastExportNever');
+  const pad = x => String(x).padStart(2,'0');
+  return t('lastExportInfo',{time:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`});
 }
 
 function importData(event) {
@@ -1242,11 +1780,14 @@ function importData(event) {
       if (data.stickies) stickies = data.stickies;
       save(); saveStickies();
       renderAll(); renderStickies(); updateStorageInfo();
+      if(currentView==='week') renderWeek();
       fb.textContent = t('importOk',{days});
       fb.style.color = 'var(--completed)';
+      showToast(t('importOk',{days}));
     } catch(err) {
       fb.textContent = t('importErr');
       fb.style.color = 'var(--accent)';
+      showToast(t('importErr'));
     }
     fb.style.display = 'block';
   };
@@ -1256,12 +1797,19 @@ function importData(event) {
 
 // ── Data Modal ────────────────────────────────────────────────────
 function openDataModal() {
+  rememberFocus();
   document.getElementById('import-feedback').style.display='none';
   updateStorageInfo();
+  const li=document.getElementById('last-export-info');
+  if(li) li.textContent = formatLastExport();
+  updateSyncUI();
   document.getElementById('data-modal').classList.add('open');
+  const firstBtn=document.querySelector('#data-modal .btn-primary');
+  if(firstBtn) firstBtn.focus();
 }
 function closeDataModal() {
   document.getElementById('data-modal').classList.remove('open');
+  restoreFocus();
 }
 document.getElementById('data-modal').addEventListener('click',function(e){if(e.target===this)closeDataModal();});
 
@@ -1323,7 +1871,11 @@ function renderWeek() {
     const isSelected = date===currentDate;
     const col = document.createElement('div');
     col.className='week-day'+(isToday?' today-col':'')+(isSelected&&!isToday?' selected-col':'');
+    col.setAttribute('role','button'); col.tabIndex = 0;
     col.onclick = () => { currentDate=date; setView('day'); updateDateDisplay(); };
+    col.addEventListener('keydown', function(ev){
+      if (ev.key==='Enter' || ev.key===' ') { ev.preventDefault(); col.click(); }
+    });
 
     const sorted = dayTasks.slice().sort((a,b)=>(a.start||'99:99').localeCompare(b.start||'99:99'));
     const visible = sorted.slice(0,4);
@@ -1336,7 +1888,7 @@ function renderWeek() {
 
     col.innerHTML = `
       <div class="wk-day-head">
-        <div class="wk-day-name">${weekShort[d.getDay()]}</div>
+        <div class="wk-day-name">${weekShort[d.getDay()]}${isToday?`<span class="wk-today-tag">${t('today')}</span>`:''}</div>
         <div class="wk-day-num">${d.getDate()}</div>
       </div>
       <div class="wk-tasks">
@@ -1412,7 +1964,7 @@ function renderWeekGoals() {
   if (goals.length > 0 && progEl) {
     progEl.style.display = '';
     const pct = Math.round(done / goals.length * 100);
-    if (fillEl)  fillEl.style.width = pct + '%';
+    if (fillEl)  fillEl.style.transform = 'scaleX('+(pct/100)+')';
     if (barText) barText.textContent = t('wkGoalProgress', {done, total: goals.length});
     if (barPct)  barPct.textContent  = pct + '%';
   } else if (progEl) {
@@ -1464,6 +2016,12 @@ function setPriority(p,btn) {
   selectedPriority=p;
   document.querySelectorAll('.priority-btn').forEach(b=>b.className='priority-btn');
   btn.classList.add('active-'+p);
+}
+function setStartNow() {
+  const n=new Date();
+  const v=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('t-start').value=v;
+  onFormStartChange();
 }
 function onFormStartChange() {
   const start=document.getElementById('t-start').value;
@@ -1517,6 +2075,7 @@ function addTask() {
   document.getElementById('t-name').focus();
   renderAll();
   if (currentView==='week') renderWeek();
+  showToast(t('toastAdded'));
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1544,27 +2103,29 @@ function renderAll(skipDefer){
 }
 
 function renderTasks() {
+  document.getElementById('copy-next-day-btn').disabled = !(tasks[currentDate] || []).length;
   const list=getSortedTasks(), container=document.getElementById('task-list');
+  const prevKeys=new Set(_taskNodes.keys());
+  _taskNodes.clear();
   if (list.length===0){
     container.innerHTML=`<div class="empty-state"><div class="icon">🗒</div><p>${t('emptyTitle')}<br>${t('emptyHint')}</p></div>`;
     document.getElementById('progress-area').style.display='none'; return;
   }
   document.getElementById('progress-area').style.display='';
   container.innerHTML='';
+  const freshRender = prevKeys.size === 0;
+  container.classList.toggle('stagger', list.length<=12);
   setupDragDelegation();
-  const catMap={work:t('catWork'),study:t('catStudy'),life:t('catLife'),health:t('catHealth'),social:t('catSocial'),fun:t('catFun'),other:t('catOther')};
-  const priLabel={high:t('priHighLabel'),medium:t('priMidLabel'),low:t('priLowLabel')};
-  list.forEach(task=>{
+  list.forEach((task,idx)=>{
     const nowActive=isTaskNow(task)&&!task.done;
     const div=document.createElement('div');
     div.className='task-item'+(task.done?' task-done':'')+(nowActive?' is-now':'');
     div.draggable=true; div.dataset.id=task.id;
     const timeStr=task.start?(task.end?`${task.start} – ${task.end}`:task.start):t('allDay');
-    let badges='';
-    if(task.priority) badges+=`<span class="badge badge-${task.priority}">${priLabel[task.priority]||task.priority}</span>`;
-    if(task.category) badges+=`<span class="badge badge-cat">${catMap[task.category]||task.category}</span>`;
+    const badges=taskBadgeHTML(task);
+    if(!prevKeys.has(String(task.id))){div.classList.add('task-enter');div.style.setProperty('--i',freshRender?Math.min(idx,7):0);}
     div.innerHTML=`
-      <div class="task-check${task.done?' checked':''}" onclick="toggleDone(${task.id})"></div>
+      <div class="task-check${task.done?' checked':''}" role="checkbox" aria-checked="${task.done}" tabindex="0" onclick="toggleDone(${task.id})" onkeydown="if(event.key==='Enter'||event.key===' ')toggleDone(${task.id})"></div>
       <div class="task-time${!task.start?' no-time':''}">${timeStr}</div>
       <div class="task-body">
         <div class="task-name">${escHtml(task.name)}${nowActive?`<span class="now-badge">${t('nowBadge')}</span>`:''}</div>
@@ -1572,12 +2133,61 @@ function renderTasks() {
         ${badges?`<div class="task-badges">${badges}</div>`:''}
       </div>
       <div class="task-actions">
-        <button class="task-act-btn pomodoro${pomodoroTaskId==task.id&&(pomodoroRunning||pomodoroFinished)?' pomo-active':''}" onclick="openPomodoro(${task.id})" title="${t('pomoBtnTitle')}">🍅</button>
-        <button class="task-act-btn" onclick="openEdit(${task.id})" title="${t('editTitle')}">✏️</button>
-        <button class="task-act-btn delete" onclick="deleteTask(${task.id})" title="${t('delTitle')}">🗑</button>
+        <button class="task-act-btn pomodoro${pomodoroTaskId==task.id&&(pomodoroRunning||pomodoroFinished)?' pomo-active':''}" onclick="openPomodoro(${task.id})" title="${t('pomoBtnTitle')}" aria-label="${t('pomoBtnTitle')}">🍅</button>
+        <button class="task-act-btn" onclick="openEdit(${task.id})" title="${t('editTitle')}" aria-label="${t('editTitle')}">✏️</button>
+        <button class="task-act-btn delete" onclick="deleteTask(${task.id})" title="${t('delTitle')}" aria-label="${t('delTitle')}">🗑</button>
       </div>`;
     container.appendChild(div);
+    _taskNodes.set(String(task.id), div);
   });
+}
+
+function taskBadgeHTML(task) {
+  const catMap={work:t('catWork'),study:t('catStudy'),life:t('catLife'),health:t('catHealth'),social:t('catSocial'),fun:t('catFun'),other:t('catOther')};
+  const priLabel={high:t('priHighLabel'),medium:t('priMidLabel'),low:t('priLowLabel')};
+  let s='';
+  if(task.priority) s+=`<span class="badge badge-${task.priority}">${priLabel[task.priority]||task.priority}</span>`;
+  if(task.category) s+=`<span class="badge badge-cat">${catMap[task.category]||task.category}</span>`;
+  return s;
+}
+
+// In-place update of a single task row (toggle done / state changes only)
+function updateTaskNode(task) {
+  const el=_taskNodes.get(String(task.id));
+  if(!el) return;
+  const nowActive=isTaskNow(task)&&!task.done;
+  el.className='task-item'+(task.done?' task-done':'')+(nowActive?' is-now':'');
+  const check=el.querySelector('.task-check');
+  check.className='task-check'+(task.done?' checked':'');
+  check.setAttribute('aria-checked', task.done);
+  const timeEl=el.querySelector('.task-time');
+  timeEl.textContent=task.start?(task.end?`${task.start} – ${task.end}`:task.start):t('allDay');
+  timeEl.classList.toggle('no-time', !task.start);
+  const nameEl=el.querySelector('.task-name');
+  nameEl.innerHTML=`${escHtml(task.name)}${nowActive?`<span class="now-badge">${t('nowBadge')}</span>`:''}`;
+  const bodyEl=el.querySelector('.task-body');
+  const noteEl=el.querySelector('.task-note');
+  if(task.note){
+    if(!noteEl){const d=document.createElement('div');d.className='task-note';bodyEl.appendChild(d);d.textContent=task.note;}
+    else noteEl.textContent=task.note;
+  } else if(noteEl){ noteEl.remove(); }
+  const oldBadges=el.querySelector('.task-badges');
+  if(oldBadges) oldBadges.remove();
+  const badges=taskBadgeHTML(task);
+  if(badges){const d=document.createElement('div');d.className='task-badges';d.innerHTML=badges;bodyEl.appendChild(d);}
+}
+
+function removeTaskNodeAnimated(id) {
+  const el=_taskNodes.get(String(id));
+  _taskNodes.delete(String(id));
+  if(!el) return;
+  el.classList.add('task-removing');
+  setTimeout(()=>el.remove(), 230);
+}
+
+function scheduleStatsTimeline() {
+  if(_rafStats) cancelAnimationFrame(_rafStats);
+  _rafStats=requestAnimationFrame(()=>{renderStats();renderTimeline();_rafStats=null;});
 }
 
 // Set up drag delegation on container (called once, survives re-renders via event delegation)
@@ -1591,9 +2201,15 @@ function setupDragDelegation() {
   });
   container.addEventListener('dragover', function(e) {
     e.preventDefault();
+    e.dataTransfer.dropEffect='move';
     const item = e.target.closest('.task-item');
-    document.querySelectorAll('.task-item').forEach(el=>el.classList.remove('drag-over'));
-    if (item) { item.classList.add('drag-over'); e.dataTransfer.dropEffect='move'; }
+    if (!item) return;
+    if (_dragRaf) return; // throttle visual updates to one per frame
+    _dragRaf = requestAnimationFrame(() => {
+      _dragRaf = null;
+      if (_dragHoverEl) { _dragHoverEl.classList.remove('drag-over'); _dragHoverEl = null; }
+      if (item) { item.classList.add('drag-over'); _dragHoverEl = item; }
+    });
   });
   container.addEventListener('drop', function(e) {
     e.preventDefault();
@@ -1604,10 +2220,20 @@ function setupDragDelegation() {
     const list=tasks[currentDate]||[], si=list.findIndex(t2=>t2.id==dragSrcId), ti=list.findIndex(t2=>t2.id==targetId);
     if(si<0||ti<0) return;
     const[moved]=list.splice(si,1); list.splice(ti,0,moved);
-    tasks[currentDate]=list; invalidateSortedCache(); save(true); sortMode='added'; renderAll();
+    tasks[currentDate]=list; invalidateSortedCache(); save(true); sortMode='added';
+    const sel=document.getElementById('sort-select'); if(sel) sel.value='added';
+    // Move the row node directly instead of rebuilding the whole list
+    let srcEl=null, tgtEl=null;
+    container.querySelectorAll('.task-item').forEach(el=>{
+      if(el.dataset.id==dragSrcId) srcEl=el;
+      if(el.dataset.id==targetId) tgtEl=el;
+    });
+    if(srcEl&&tgtEl&&srcEl!==tgtEl) container.insertBefore(srcEl, tgtEl);
   });
   container.addEventListener('dragend', function() {
-    document.querySelectorAll('.task-item').forEach(el=>{el.classList.remove('dragging');el.classList.remove('drag-over');});
+    if(_dragRaf){cancelAnimationFrame(_dragRaf);_dragRaf=null;}
+    if(_dragHoverEl){_dragHoverEl.classList.remove('drag-over');_dragHoverEl=null;}
+    container.querySelectorAll('.task-item').forEach(el=>{el.classList.remove('dragging');el.classList.remove('drag-over');});
   });
 }
 
@@ -1622,7 +2248,7 @@ function renderStats() {
   const setTxt=(id,v)=>{const el=document.getElementById(id);if(el.textContent!=v)el.textContent=v;};
   setTxt('stat-total',total); setTxt('stat-done',done);
   setTxt('stat-pending',total-done); setTxt('stat-high',high);
-  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-fill').style.transform='scaleX('+(pct/100)+')';
   setTxt('progress-text',t('progressOf',{done,total}));
   setTxt('progress-pct',pct+'%');
 }
@@ -1675,8 +2301,15 @@ function weekKeyOf(dateStr) {
 function addSticky() {
   const inp=document.getElementById('sticky-input');
   const text=inp.value.trim();if(!text){inp.focus();return;}
-  stickies.push({id:Date.now()+Math.random(),text,done:false});
+  stickies.push({id:Date.now()+Math.random(),text,done:false,scope:stickyScope,date:currentDate});
   inp.value='';saveStickies();renderStickies();inp.focus();
+}
+function setStickyScope(scope) {
+  if (scope !== 'today' && scope !== 'all') return;
+  stickyScope = scope;
+  document.querySelectorAll('#sticky-scope-btns .sticky-scope-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.scope === scope);
+  });
 }
 function toggleSticky(id){
   const s=stickies.find(x=>x.id==id);
@@ -1689,10 +2322,21 @@ function toggleSticky(id){
   }
 }
 function deleteSticky(id){
-  stickies=stickies.filter(x=>x.id!=id);
-  saveStickies();
-  renderStickies();
-  if(currentView==='week') renderWeekGoals();
+  const s=stickies.find(x=>x.id==id);
+  if(!s) return;
+  openConfirm(s.weekKey?t('confirmDeleteGoal'):t('confirmDeleteSticky'), function(){
+    stickies=stickies.filter(x=>x.id!=id);
+    saveStickies();
+    renderStickies();
+    if(currentView==='week') renderWeekGoals();
+    showToast(t('toastDeleted'),{duration:4000,undo:function(){
+      stickies.push(s);
+      saveStickies();
+      renderStickies();
+      if(currentView==='week') renderWeekGoals();
+      showToast(t('toastRestored'));
+    }});
+  });
 }
 
 let _stickiesTimer = null;
@@ -1708,10 +2352,12 @@ function _doRenderStickies() {
   // Split: week-goals for this date's week vs regular stickies
   const thisWeekKey = weekKeyOf(currentDate);
   const weekGoals   = stickies.filter(s => s.weekKey === thisWeekKey);
-  const regular     = stickies.filter(s => !s.weekKey);
+  // Regular stickies: "all" scope always shows; "today" scope only on its own day.
+  const regular     = stickies.filter(s => !s.weekKey &&
+    (s.scope === 'today' ? (s.date === currentDate) : true));
 
-  const totalAll = stickies.length;
-  const doneAll  = stickies.filter(s => s.done).length;
+  const totalAll = regular.length;
+  const doneAll  = regular.filter(s => s.done).length;
   countEl.textContent = totalAll ? t('stickyDone',{done:doneAll,total:totalAll}) : '';
 
   container.innerHTML = '';
@@ -1759,9 +2405,11 @@ function _doRenderStickies() {
   regular.forEach(s => {
     const div = document.createElement('div');
     div.className = 'sticky-item' + (s.done ? ' sdone' : '');
+    const dateBadge = s.scope === 'today'
+      ? `<span class="sticky-date-badge">${t('stickyScopeToday')}</span>` : '';
     div.innerHTML = `
       <div class="sticky-check${s.done?' checked':''}" onclick="toggleSticky(${s.id})"></div>
-      <div class="sticky-text">${escHtml(s.text)}</div>
+      <div class="sticky-text">${escHtml(s.text)}${dateBadge}</div>
       <button class="sticky-del" onclick="deleteSticky(${s.id})" title="${t('stickyDelTitle')}">✕</button>`;
     container.appendChild(div);
   });
@@ -1780,18 +2428,79 @@ function _doRenderStickies() {
 // ═══════════════════════════════════════════════════════════════════
 function toggleDone(id) {
   const task=(tasks[currentDate]||[]).find(t2=>t2.id==id);
-  if(task){task.done=!task.done;invalidateSortedCache();save();renderAll();if(currentView==='week')renderWeek();}
+  if(!task)return;
+  task.done=!task.done;
+  invalidateSortedCache(); save();
+  updateTaskNode(task);
+  scheduleStatsTimeline();
+  if(currentView==='week')renderWeek();
+}
+function copyPlansToNextDay() {
+  const sourceDate = currentDate;
+  const source = (tasks[sourceDate] || []).map(task => ({ ...task }));
+  if (!source.length) { showToast(t('copyEmpty')); return; }
+  const targetDate = nextDay(sourceDate);
+  const append = () => {
+    const now = Date.now();
+    const usedIds = new Set(Object.values(tasks).flat().map(task => task.id));
+    const copies = source.map((task, index) => {
+      let id = now + index + Math.random();
+      while (usedIds.has(id)) id++;
+      usedIds.add(id);
+      return { ...task, id, done: false, addedAt: now + index };
+    });
+    tasks[targetDate] = [...(tasks[targetDate] || []), ...copies];
+    invalidateSortedCache(); save(true);
+    currentDate = targetDate;
+    updateDateDisplay();
+    updateStorageInfo();
+    showToast(t('toastCopied', {count: copies.length, date: targetDate}), {
+      duration: 6000,
+      undo: () => {
+        const copyIds = new Set(copies.map(task => task.id));
+        tasks[targetDate] = (tasks[targetDate] || []).filter(task => !copyIds.has(task.id));
+        invalidateSortedCache(); save(true);
+        currentDate = sourceDate;
+        updateDateDisplay();
+        updateStorageInfo();
+      }
+    });
+  };
+  const existing = (tasks[targetDate] || []).length;
+  if (existing) {
+    openConfirm(t('confirmCopyNextDay', {date: targetDate, existing, count: source.length}), append, t('confirmCopy'));
+  } else {
+    append();
+  }
 }
 function deleteTask(id) {
-  tasks[currentDate]=(tasks[currentDate]||[]).filter(t2=>t2.id!=id);
-  invalidateSortedCache(); save();renderAll();if(currentView==='week')renderWeek();
+  const list=tasks[currentDate]||[];
+  const task=list.find(t2=>t2.id==id);
+  if(!task) return;
+  const date=currentDate;
+  openConfirm(t('confirmDeleteTask',{name:task.name}), function(){
+    tasks[date]=list.filter(t2=>t2.id!=id);
+    invalidateSortedCache(); save();
+    if(list.length-1<=0) renderAll();
+    else { removeTaskNodeAnimated(id); scheduleStatsTimeline(); }
+    if(currentView==='week') renderWeek();
+    showToast(t('toastDeleted'),{duration:4000,undo:function(){
+      if(!tasks[date]) tasks[date]=[];
+      tasks[date].push(task);
+      invalidateSortedCache(); save();
+      renderAll();
+      if(currentView==='week') renderWeek();
+      showToast(t('toastRestored'));
+    }});
+  });
 }
-function sortTasks(mode){sortMode=mode;invalidateSortedCache();renderTasks();}
+function sortTasks(mode){sortMode=mode;invalidateSortedCache();renderTasks();const sel=document.getElementById('sort-select');if(sel)sel.value=mode;}
 
 // ── EDIT MODAL ────────────────────────────────────────────────────
 function openEdit(id){
   const task=(tasks[currentDate]||[]).find(t2=>t2.id==id);if(!task)return;
   editingId=id;
+  rememberFocus();
   document.getElementById('e-start').value=task.start||'';
   document.getElementById('e-end').value=task.end||'';
   document.getElementById('e-name').value=task.name;
@@ -1799,8 +2508,9 @@ function openEdit(id){
   document.getElementById('e-cat').value=task.category||'';
   document.getElementById('e-priority').value=task.priority||'medium';
   document.getElementById('modal').classList.add('open');
+  document.getElementById('e-name').focus();
 }
-function closeModal(){editingId=null;document.getElementById('modal').classList.remove('open');}
+function closeModal(){editingId=null;document.getElementById('modal').classList.remove('open');restoreFocus();}
 function saveEdit(){
   const task=(tasks[currentDate]||[]).find(t2=>t2.id==editingId);if(!task)return;
   const name=document.getElementById('e-name').value.trim();if(!name)return;
@@ -1810,11 +2520,13 @@ function saveEdit(){
   task.category=document.getElementById('e-cat').value;
   task.priority=document.getElementById('e-priority').value;
   invalidateSortedCache();save();closeModal();renderAll();if(currentView==='week')renderWeek();
+  showToast(t('toastSaved'));
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
 // ── DRAG & DROP ───────────────────────────────────────────────────
 let dragSrcId=null;
+let _dragRaf=null, _dragHoverEl=null;
 function onDragStart(e){dragSrcId=this.dataset.id;this.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
 function onDragOver(e){e.preventDefault();document.querySelectorAll('.task-item').forEach(el=>el.classList.remove('drag-over'));this.classList.add('drag-over');e.dataTransfer.dropEffect='move';}
 function onDrop(e){
@@ -1849,9 +2561,13 @@ let pomodoroTotalSecs = 0;      // total seconds for this session
 let pomodoroRemain    = 0;      // seconds remaining (float)
 let pomodoroRunning   = false;
 let pomodoroFinished  = false;
-let pomodoroInterval  = null;
+let pomodoroRaf       = null;   // requestAnimationFrame id while running
 let _pomoResumeAt     = 0;      // Date.now() when last resumed
 let _pomoRemainAtResume = 0;    // pomodoroRemain when last resumed
+let _pomoUiCache      = '';     // last rendered UI state (skip unchanged writes)
+let _audioCtx         = null;   // reused AudioContext for the finish sound
+const _pomoEls        = {};
+function _pomoEl(id) { return _pomoEls[id] || (_pomoEls[id] = document.getElementById(id)); }
 
 // CIRCUMFERENCE for r=146: 2π×146 ≈ 917.9
 const POMO_CIRC = 2 * Math.PI * 146; // ≈ 917.9
@@ -1863,15 +2579,14 @@ function openPomodoro(taskId) {
 
   // If another session is running, confirm switch
   if (pomodoroRunning && pomodoroTaskId !== taskId) {
-    if (!confirm(t('pomoSwitchConfirm'))) return;
-    _pomoInternalStop(); // stop without closing modal
+    openConfirm(t('pomoSwitchConfirm'), function(){ _pomoInternalStop(); openPomodoro(taskId); }, t('confirmSwitch'));
+    return;
   }
 
   pomodoroTaskId   = taskId;
   pomodoroFinished = false;
   pomodoroRunning  = false;
-  clearInterval(pomodoroInterval);
-  pomodoroInterval = null;
+  if (pomodoroRaf) { cancelAnimationFrame(pomodoroRaf); pomodoroRaf = null; }
 
   // ── Determine timer mode ──────────────────────────────────────
   const isToday  = currentDate === todayStr();
@@ -1945,7 +2660,12 @@ function openPomodoro(taskId) {
   document.getElementById('pomo-finish-note').textContent = t('pomoFinishNote');
 
   _pomoRefreshDisplay(true); // true = skip ring transition on first open
+  rememberFocus();
   document.getElementById('pomodoro-modal').classList.add('open');
+  const closeBtn=document.getElementById('pomo-close-btn');
+  if(closeBtn){closeBtn.title=t('close');closeBtn.setAttribute('aria-label',t('close'));}
+  if(showSetRow) document.getElementById('pomo-minutes-input').focus();
+  else document.getElementById('pomo-btn-main').focus();
 }
 
 // ── Main Action Button dispatcher ────────────────────────────────
@@ -1965,7 +2685,7 @@ function pomodoroMainAction() {
 function pomodoroConfirmTime() {
   const val = parseInt(document.getElementById('pomo-minutes-input').value);
   if (!val || val < 1 || val > 480) {
-    alert(t('pomoInvalidTime'));
+    showToast(t('pomoInvalidTime'));
     document.getElementById('pomo-minutes-input').focus();
     return;
   }
@@ -1994,23 +2714,9 @@ function pomodoroStart() {
   _pomoResumeAt       = Date.now();
   _pomoRemainAtResume = pomodoroRemain;
 
-  clearInterval(pomodoroInterval);
-  pomodoroInterval = setInterval(() => {
-    const elapsed = (Date.now() - _pomoResumeAt) / 1000;
-    pomodoroRemain = Math.max(0, _pomoRemainAtResume - elapsed);
-
-    if (pomodoroRemain <= 0) {
-      pomodoroRemain  = 0;
-      pomodoroRunning = false;
-      pomodoroFinished = true;
-      clearInterval(pomodoroInterval);
-      pomodoroInterval = null;
-      _playPomoSound();
-      _syncPomoBtn(); // only update the one button, no full re-render
-    }
-    _pomoRefreshDisplay(false);
-  }, 250);
-
+  if (pomodoroRaf) cancelAnimationFrame(pomodoroRaf);
+  _ensureAudioCtx();
+  pomodoroRaf = requestAnimationFrame(_pomoTick);
   _pomoRefreshDisplay(false);
   _syncPomoBtn(); // only update the one button, no full re-render
 }
@@ -2018,15 +2724,30 @@ function pomodoroStart() {
 function pomodoroPause() {
   if (!pomodoroRunning) return;
   pomodoroRunning = false;
-  clearInterval(pomodoroInterval);
-  pomodoroInterval = null;
+  if (pomodoroRaf) { cancelAnimationFrame(pomodoroRaf); pomodoroRaf = null; }
   _pomoRemainAtResume = pomodoroRemain; // save exact remaining
   _pomoRefreshDisplay(false);
+  _syncPomoBtn();
+}
+
+function _pomoTick() {
+  const elapsed = (Date.now() - _pomoResumeAt) / 1000;
+  pomodoroRemain = Math.max(0, _pomoRemainAtResume - elapsed);
+
+  if (pomodoroRemain <= 0) {
+    pomodoroRemain  = 0;
+    pomodoroRunning = false;
+    pomodoroFinished = true;
+    pomodoroRaf = null;
+    _playPomoSound();
+    _syncPomoBtn();
+  }
+  _pomoRefreshDisplay(false);
+  if (pomodoroRunning) pomodoroRaf = requestAnimationFrame(_pomoTick);
 }
 
 function pomodoroReset() {
-  clearInterval(pomodoroInterval);
-  pomodoroInterval = null;
+  if (pomodoroRaf) { cancelAnimationFrame(pomodoroRaf); pomodoroRaf = null; }
   pomodoroRunning  = false;
   pomodoroFinished = false;
   pomodoroRemain   = pomodoroTotalSecs;
@@ -2039,6 +2760,7 @@ function stopPomodoro() {
   _pomoInternalStop();
   document.getElementById('pomodoro-modal').classList.remove('open');
   _syncPomoBtn();
+  restoreFocus();
 }
 
 function _syncPomoBtn() {
@@ -2052,8 +2774,7 @@ function _syncPomoBtn() {
 }
 
 function _pomoInternalStop() {
-  clearInterval(pomodoroInterval);
-  pomodoroInterval  = null;
+  if (pomodoroRaf) { cancelAnimationFrame(pomodoroRaf); pomodoroRaf = null; }
   pomodoroRunning   = false;
   pomodoroFinished  = false;
   pomodoroTaskId    = null;
@@ -2063,75 +2784,69 @@ function _pomoInternalStop() {
 
 // ── Display refresh ──────────────────────────────────────────────
 function _pomoRefreshDisplay(skipTransition) {
-  // Time string
   const totalS = pomodoroTotalSecs || pomodoroRemain; // use remain when total not set yet
   const secs   = Math.ceil(pomodoroRemain);
   const mm     = String(Math.floor(secs / 60)).padStart(2, '0');
   const ss     = String(secs % 60).padStart(2, '0');
-  document.getElementById('pomo-time-display').textContent = mm + ':' + ss;
-
-  // Ring
-  const ring = document.getElementById('pomo-ring-fill');
-  const progress = totalS > 0 ? pomodoroRemain / totalS : 1;
+  // Use whole seconds so the cache key only changes once per second, not every rAF frame.
+  // The ring's CSS transition (stroke-dashoffset .5s linear) smooths the per-second jump.
+  const progress = totalS > 0 ? Math.max(0, Math.min(1, secs / totalS)) : 1;
   const offset   = POMO_CIRC * (1 - progress);
-  if (skipTransition) {
-    ring.classList.add('no-transition');
-    // Force reflow so the class takes effect before we set the value
-    void ring.getBoundingClientRect();
-  }
-  ring.style.strokeDashoffset = offset.toFixed(2);
-  if (skipTransition) {
-    // Re-enable transition after next paint
-    requestAnimationFrame(() => ring.classList.remove('no-transition'));
-  }
-  ring.className = 'pomo-ring-fill' +
-    (skipTransition ? ' no-transition' : '') +
+
+  let statusText, statusCls;
+  if (pomodoroFinished)       { statusText = t('pomoFinished'); statusCls = 'st-done'; }
+  else if (pomodoroRunning)   { statusText = t('pomoRunning');  statusCls = 'st-running'; }
+  else if (pomodoroTotalSecs>0){ statusText = t('pomoPaused');  statusCls = 'st-paused'; }
+  else                        { statusText = t('pomoReady');    statusCls = ''; }
+
+  let btnText;
+  if (pomodoroFinished)       btnText = t('pomoBtnRestart');
+  else if (pomodoroRunning)   btnText = t('pomoBtnPause');
+  else if (pomodoroTotalSecs>0) btnText = t('pomoBtnResume');
+  else                        btnText = t('pomoBtnStart');
+
+  const resetVisible = pomodoroTotalSecs > 0;
+  const noteVisible  = pomodoroFinished;
+  const ringCls = 'pomo-ring-fill' +
     (pomodoroFinished ? ' done-color' : pomodoroRunning ? '' : pomodoroTotalSecs > 0 ? ' paused-color' : '');
 
-  // Status label
-  const statusEl = document.getElementById('pomo-status-lbl');
-  if (pomodoroFinished) {
-    statusEl.textContent = t('pomoFinished');
-    statusEl.className = 'pomo-status-lbl st-done';
-  } else if (pomodoroRunning) {
-    statusEl.textContent = t('pomoRunning');
-    statusEl.className = 'pomo-status-lbl st-running';
-  } else if (pomodoroTotalSecs > 0) {
-    statusEl.textContent = t('pomoPaused');
-    statusEl.className = 'pomo-status-lbl st-paused';
-  } else {
-    statusEl.textContent = t('pomoReady');
-    statusEl.className = 'pomo-status-lbl';
+  // Skip DOM writes entirely when nothing visible changed
+  const key = [mm+':'+ss, statusText, statusCls, btnText, resetVisible, noteVisible, ringCls, offset.toFixed(1)].join('|');
+  if (key === _pomoUiCache) return;
+  _pomoUiCache = key;
+
+  _pomoEl('pomo-time-display').textContent = mm + ':' + ss;
+  const ring = _pomoEl('pomo-ring-fill');
+  // Toggle the transition via inline style instead of a class + forced reflow,
+  // which blocked the main thread (an ~117ms long-task) on every modal open.
+  ring.style.transition = skipTransition ? 'none' : '';
+  ring.style.strokeDashoffset = offset.toFixed(2);
+  if (skipTransition) {
+    requestAnimationFrame(() => { ring.style.transition = ''; });
   }
-
-  // Main action button
-  const btn = document.getElementById('pomo-btn-main');
-  if (pomodoroFinished) {
-    btn.textContent = t('pomoBtnRestart');
-    btn.disabled = false;
-  } else if (pomodoroRunning) {
-    btn.textContent = t('pomoBtnPause');
-    btn.disabled = false;
-  } else if (pomodoroTotalSecs > 0) {
-    btn.textContent = t('pomoBtnResume');
-    btn.disabled = false;
-  } else {
-    btn.textContent = t('pomoBtnStart');
-    btn.disabled = false;
-  }
-
-  // Reset button (visible only when time is set and not finished)
-  const resetBtn = document.getElementById('pomo-btn-reset');
-  resetBtn.style.display = (pomodoroTotalSecs > 0) ? '' : 'none';
-
-  // Finish note
-  document.getElementById('pomo-finish-note').style.display = pomodoroFinished ? '' : 'none';
+  ring.className = ringCls;
+  const statusEl = _pomoEl('pomo-status-lbl');
+  statusEl.textContent = statusText;
+  statusEl.className = 'pomo-status-lbl' + (statusCls ? ' ' + statusCls : '');
+  const btn = _pomoEl('pomo-btn-main');
+  btn.textContent = btnText;
+  btn.disabled = false;
+  _pomoEl('pomo-btn-reset').style.display = resetVisible ? '' : 'none';
+  _pomoEl('pomo-finish-note').style.display = noteVisible ? '' : 'none';
 }
 
 // ── Sound: triple-beep via Web Audio API ─────────────────────────
+function _ensureAudioCtx() {
+  try {
+    if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+  } catch(e) { /* audio unavailable */ }
+}
 function _playPomoSound() {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    _ensureAudioCtx();
+    const ctx = _audioCtx;
+    if (!ctx) return;
     [0, 0.35, 0.7].forEach(delay => {
       const osc  = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -2153,15 +2868,55 @@ document.getElementById('pomodoro-modal').addEventListener('click', function(e) 
 // ── UTIL ──────────────────────────────────────────────────────────
 
 // ═══════════════════════════════════════════════════════════════════
+// DESKTOP WALLPAPER
+// ═══════════════════════════════════════════════════════════════════
+function openWallpaper() {
+  pushSyncNow();
+  try {
+    const f=document.createElement('iframe');
+    f.style.display='none';
+    f.src='steam://rungameid/431960';
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),2000);
+  } catch(e) {}
+  try { window.open('steam://rungameid/431960','_blank'); } catch(e2) {}
+  showToast(t('wallpaperTip'));
+}
+// 壁纸窗口里勾选/完成任务后，回到本站自动刷新
+window.addEventListener('storage', function(e){
+  if(e.key==='dp_tasks'){
+    tasks=JSON.parse(e.newValue||'{}');
+    invalidateSortedCache(); renderAll(); renderStickies();
+    if(currentView==='week') renderWeek();
+  } else if(e.key==='dp_stickies'){
+    stickies=JSON.parse(e.newValue||'[]');
+    renderStickies();
+    if(currentView==='week') renderWeekGoals();
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
-load(); loadStickies(); loadTheme(); loadLang(); loadView();
-autoPrune();              // silent 180-day auto-cleanup on load
-updateDateDisplay();
-renderStickies();
-clearForm();
-updateNotifBanner();
+async function initializePlanner() {
+  // Load the legacy cache first, then replace it with the durable IndexedDB copy when available.
+  load();
+  loadStickies();
+  await restorePersistedData();
+  loadTheme();
+  loadLang();
+  loadView();
+  autoPrune();              // silent 180-day auto-cleanup on load
+  updateDateDisplay();
+  renderStickies();
+  clearForm();
+  updateNotifBanner();
+  persistData();            // migrate existing local data on the first upgraded visit
+  const adopted = await pollSync();
+  if (!adopted) pushSyncNow();
+  setInterval(pollSync, 5000);
+}
+initializePlanner();
 </script>
 </body>
 </html>
-
